@@ -13,4 +13,6 @@ data class DocumentDetail(
     val type: DocumentType,
     @Schema(description = "담당자 워크스페이스 멤버 ID (없으면 null)", example = "1")
     val assigneeMemberId: Long?,
+    @Schema(description = "블록 row 목록")
+    val blocks: List<Block>,
 )
