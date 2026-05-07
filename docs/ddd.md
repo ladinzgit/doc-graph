@@ -33,12 +33,22 @@ com.docgraph.backend/
 - **이벤트 이름**: `<Subject><PastAction>Event` (예: `ValidationPairCreatedEvent`)
 - **리스너 위치**: 수신 도메인의 `interfaces/event/`
 - **리스너 이름**: `<EventName>Listener` — 이벤트당 한 클래스 (예: `ValidationPairCreatedEventListener`). 같은 이벤트에 둘 이상의 처리가 필요하면 한 클래스 안에 메서드를 추가하지 말고, 처리 의도를 드러내는 접미사로 분리한다.
+- **페이로드 원칙 — Thin Event**: 이벤트는 *식별자 + 이벤트 메타데이터(`occurredAt` 등)*만 담는다. **도메인 데이터는 페이로드에 박지 않는다** — 필요하면 consumer가 publisher의 Query API로 *처리 시점에* 조회한다. 발행 시점 스냅샷을 박으면 처리 지연 시 stale + 스키마 진화 부담↑ + "이 필드 stale 가능?" 분기 발생.
 
 ```
 # 예시: graph → validation
 graph/command/domain/ValidationPairCreatedEvent.kt                          # 이벤트
 graph/command/application/GraphService.kt                                   # publishEvent() 호출
 validation/command/interfaces/event/ValidationPairCreatedEventListener.kt   # @EventListener
+```
+
+```kotlin
+// Thin Event 예시
+data class ValidationPairCreatedEvent(
+    val validationPairId: UUID,
+    val edgeId: Long,                  // lookup handle — graph Query API로 추가 데이터 조회
+    val occurredAt: OffsetDateTime,    // 이벤트 메타데이터
+)
 ```
 
 ### 읽기 — Query API
