@@ -84,6 +84,16 @@ def client(backend):
         yield c
 
 
+@pytest.fixture
+def auth_headers():
+    """test profile에서 X-Test-User-Id로 인증 우회.
+
+    실제 OAuth 흐름은 슬라이스 테스트에서 검증. 시스템 테스트는
+    인증된 컨텍스트에서의 비즈니스 흐름에 집중.
+    """
+    return {"X-Test-User-Id": "test-user-1"}
+
+
 @pytest.fixture(autouse=True)
 def _wiremock_reset(wiremock):
     wiremock.reset()
