@@ -6,7 +6,7 @@
     "apps/frontend"
   ],
   "scripts": {
-    "generate:types": "openapi-typescript http://localhost:8080/v3/api-docs -o packages/api-types/src/schema.ts"
+    "generate:types": "openapi-typescript http://localhost:8080/api/v3/api-docs -o packages/api-types/src/schema.ts"
   },
   "devDependencies": {
     "openapi-typescript": "^7.4.4"

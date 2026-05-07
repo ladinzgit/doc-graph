@@ -36,7 +36,7 @@ dependencies {
 	implementation("org.flywaydb:flyway-core")
 	runtimeOnly("org.flywaydb:flyway-database-postgresql")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 	testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")

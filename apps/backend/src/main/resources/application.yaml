@@ -1,3 +1,7 @@
+server:
+  servlet:
+    context-path: /api
+
 spring:
   application:
     name: docgraph
@@ -31,6 +35,8 @@ spring:
             token-uri: https://api.notion.com/v1/oauth/token
 
 management:
+  server:
+    port: 9090
   endpoints:
     web:
       exposure:

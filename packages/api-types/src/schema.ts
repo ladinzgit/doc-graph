@@ -3,10 +3,1212 @@
  * Do not make direct changes to the file.
  */
 
-export type paths = Record<string, never>;
+export interface paths {
+    "/projects/{id}/webhook": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 프로젝트 Webhook URL 조회 */
+        get: operations["getWebhook"];
+        /** 프로젝트 Webhook URL 설정 */
+        put: operations["updateWebhook"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/type-mappings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 상위 페이지-타입 매핑 조회 */
+        get: operations["getTypeMappings"];
+        /** 상위 페이지-타입 매핑 수정 */
+        put: operations["updateTypeMappings"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/type-assignees": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 타입별 담당자 기본값 조회 */
+        get: operations["getTypeAssignees"];
+        /**
+         * 타입별 담당자 기본값 수정
+         * @description 문서 타입별 기본 담당자를 설정한다. assigneeMemberId는 워크스페이스 멤버 ID이며, null이면 담당자 없음을 의미한다.
+         */
+        put: operations["updateTypeAssignees"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workspaces": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 내 워크스페이스 목록 */
+        get: operations["list"];
+        put?: never;
+        /** 워크스페이스 생성 */
+        post: operations["create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workspaces/{workspaceId}/projects": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 프로젝트 목록 */
+        get: operations["list_1"];
+        put?: never;
+        /**
+         * 프로젝트 생성
+         * @description Notion 루트 페이지를 기준으로 프로젝트를 생성한다. 생성 직후 동기화는 실행되지 않는다. 타입 매핑·담당자 기본값·멤버 배정을 완료한 후 POST /projects/{id}/sync로 초기 동기화를 수동 트리거해야 한다.
+         */
+        post: operations["create_1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workspaces/{id}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 멤버 초대
+         * @description 워크스페이스 멤버로 초대한다. 초대된 멤버는 프로젝트 배정 후보군이 되며, 개별 프로젝트에 배정되기 전까지는 어떤 프로젝트에도 접근할 수 없다.
+         */
+        post: operations["inviteMember"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/webhooks/notion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Notion Webhook 수신 (page.content_updated / page.moved) */
+        post: operations["receiveWebhook"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 수동 동기화 트리거
+         * @description Notion 루트 페이지 하위 트리를 전체 조회해 문서 스냅샷을 갱신하고, 엣지·연결 제안 생성을 시작한다. 프로젝트 생성 후 타입 매핑·담당자 기본값·멤버 배정이 끝난 뒤 호출한다.
+         */
+        post: operations["sync"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/rules": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 룰 목록 */
+        get: operations["listRules"];
+        put?: never;
+        /** 커스텀 룰 추가 */
+        post: operations["createRule"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/proposals/{proposalId}/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 연결 제안 수락
+         * @description EdgeProposal을 DependencyEdge로 전환하고 정합성 검증을 즉시 트리거한다. 수락 후 해당 proposal은 삭제된다.
+         */
+        post: operations["acceptProposal"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 프로젝트 멤버 배정 */
+        post: operations["assignMember"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/edges": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 엣지 목록 (관리 패널용) */
+        get: operations["listEdges"];
+        put?: never;
+        /** 커스텀 엣지 추가 */
+        post: operations["createEdge"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/conflicts/{id}/ignore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 충돌 수동 무시
+         * @description 충돌을 무시 상태로 마킹한다. 무시된 충돌은 해당 문서 쌍 중 하나가 외부에서 변경되어 재검증이 실행되면 자동으로 해제된다.
+         */
+        post: operations["ignore"];
+        /** 충돌 무시 해제 */
+        delete: operations["unignore"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/members/{memberId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** 프로젝트 멤버 제거 */
+        delete: operations["removeMember"];
+        options?: never;
+        head?: never;
+        /** 프로젝트 멤버 역할 변경 */
+        patch: operations["updateMemberRole"];
+        trace?: never;
+    };
+    "/workspaces/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 워크스페이스 상세 */
+        get: operations["get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 프로젝트 상세 */
+        get: operations["get_1"];
+        put?: never;
+        post?: never;
+        /** 프로젝트 삭제 */
+        delete: operations["delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/validation-runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 검증 실행 이력 */
+        get: operations["listValidationRuns"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/proposals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 연결 제안 목록 (관리 패널용) */
+        get: operations["listProposals"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/graph": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 그래프 전체 데이터 (캔버스 초기 렌더링용)
+         * @description 캔버스 초기 렌더링에 필요한 nodes·edges·proposals를 한 번에 반환한다. edges는 실선 의존 관계, proposals는 점선 연결 후보다. 패널·관리 목록이 필요할 때는 개별 list API를 사용한다.
+         */
+        get: operations["getGraph"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 문서 목록 */
+        get: operations["list_2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/conflicts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 프로젝트 충돌 목록 */
+        get: operations["listByProject"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauth2/authorization/notion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Notion OAuth2 인증 시작 (Spring Security가 처리 — 브라우저 redirect) */
+        get: operations["oauthStart"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/me/conflicts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 내 인박스
+         * @description 내가 담당자인 문서가 target인 충돌 목록을 배정된 모든 프로젝트에 걸쳐 반환한다. 미해소(CONFLICT) 상태가 기본이며, 무시 포함 전체 조회는 status 파라미터로 확장 예정(Post-MVP).
+         */
+        get: operations["myInbox"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/documents/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 문서 상세 */
+        get: operations["get_2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 현재 로그인 사용자 정보 */
+        get: operations["me"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/workspaces/{id}/members/{memberId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** 멤버 제거 */
+        delete: operations["removeMember_1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/rules/{ruleId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** 룰 삭제 */
+        delete: operations["deleteRule"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/proposals/{proposalId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** 연결 제안 거절 */
+        delete: operations["rejectProposal"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/projects/{id}/edges/{edgeId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** 엣지 삭제 */
+        delete: operations["deleteEdge"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sessions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** 로그아웃 */
+        delete: operations["logout"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+}
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: never;
+    schemas: {
+        UpdateWebhookRequest: {
+            /**
+             * @description Slack 또는 Discord Incoming Webhook URL
+             * @example https://hooks.slack.com/services/xxx/yyy/zzz
+             */
+            url?: string;
+        };
+        TypeMappingItem: {
+            /**
+             * @description Notion 페이지 ID
+             * @example abc1234567890def
+             */
+            notionPageId?: string;
+            /**
+             * @description 문서 타입
+             * @enum {string}
+             */
+            documentType?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+        };
+        UpdateTypeMappingsRequest: {
+            /** @description 상위 페이지-타입 매핑 목록 */
+            mappings?: components["schemas"]["TypeMappingItem"][];
+        };
+        TypeAssigneeItem: {
+            /**
+             * @description 문서 타입
+             * @enum {string}
+             */
+            documentType?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+            /**
+             * Format: int64
+             * @description 담당자 워크스페이스 멤버 ID (null이면 담당자 없음)
+             * @example 1
+             */
+            assigneeMemberId?: number | null;
+        };
+        UpdateTypeAssigneesRequest: {
+            /** @description 타입별 담당자 기본값 목록 */
+            assignees?: components["schemas"]["TypeAssigneeItem"][];
+        };
+        CreateWorkspaceRequest: {
+            /**
+             * @description 워크스페이스 이름
+             * @example My Team
+             */
+            name?: string;
+        };
+        IdResponse: {
+            /**
+             * Format: int64
+             * @description 생성된 리소스 ID
+             * @example 1
+             */
+            id?: number;
+        };
+        CreateProjectRequest: {
+            /**
+             * @description 프로젝트 이름
+             * @example Q2 Planning
+             */
+            name?: string;
+            /**
+             * @description Notion 루트 페이지 ID
+             * @example abc1234567890def
+             */
+            notionRootPageId?: string;
+        };
+        InviteMemberRequest: {
+            /**
+             * @description 초대할 멤버 이메일
+             * @example member@example.com
+             */
+            email?: string;
+        };
+        NotionActor: {
+            /**
+             * @description actor ID
+             * @example c7c11cca-1d73-471d-9b6e-bdef51470190
+             */
+            id?: string;
+            /**
+             * @description actor 타입 (person / bot)
+             * @example person
+             */
+            type?: string;
+        };
+        NotionEntity: {
+            /**
+             * @description 엔티티 ID (페이지 ID)
+             * @example abc1234567890def
+             */
+            id?: string;
+            /**
+             * @description 엔티티 타입
+             * @example page
+             */
+            type?: string;
+        };
+        NotionWebhookPayload: {
+            /** @description 웹훅 이벤트 고유 ID */
+            id?: string;
+            /**
+             * @description 이벤트 발생 시각 (ISO 8601)
+             * @example 2024-12-05T19:49:36.997Z
+             */
+            timestamp?: string;
+            /**
+             * @description 이벤트 타입 (page.content_updated / page.moved)
+             * @example page.content_updated
+             */
+            type?: string;
+            /** @description 워크스페이스 ID */
+            workspaceId?: string;
+            /** @description 웹훅 구독 ID */
+            subscriptionId?: string;
+            /** @description 이벤트를 트리거한 엔티티 */
+            entity?: components["schemas"]["NotionEntity"];
+            /** @description 이벤트 작성자 목록 */
+            authors?: components["schemas"]["NotionActor"][];
+            /**
+             * Format: int32
+             * @description 전달 시도 횟수 (최대 8회)
+             * @example 1
+             */
+            attemptNumber?: number;
+        };
+        CreateRuleRequest: {
+            /**
+             * @description 출발 문서 타입
+             * @enum {string}
+             */
+            sourceType?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+            /**
+             * @description 도착 문서 타입
+             * @enum {string}
+             */
+            targetType?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+            /**
+             * @description 체크 항목
+             * @example 범위 일치 여부
+             */
+            checkItem?: string;
+        };
+        AssignMemberRequest: {
+            /**
+             * Format: int64
+             * @description 배정할 워크스페이스 멤버 ID
+             * @example 1
+             */
+            memberId?: number;
+            /**
+             * @description 역할
+             * @enum {string}
+             */
+            role?: "ADMIN" | "MEMBER";
+        };
+        CreateEdgeRequest: {
+            /**
+             * Format: int64
+             * @description 출발 문서 ID (source 내용이 target에 반영되어야 함)
+             * @example 1
+             */
+            sourceDocumentId?: number;
+            /**
+             * Format: int64
+             * @description 도착 문서 ID
+             * @example 2
+             */
+            targetDocumentId?: number;
+            /**
+             * @description 체크 항목
+             * @example 범위 일치 여부
+             */
+            checkItem?: string;
+        };
+        IgnoreConflictRequest: {
+            /**
+             * @description 무시 사유 (선택)
+             * @example 의도된 차이로 확인됨
+             */
+            reason?: string | null;
+        };
+        UpdateProjectMemberRoleRequest: {
+            /**
+             * @description 변경할 역할
+             * @enum {string}
+             */
+            role?: "ADMIN" | "MEMBER";
+        };
+        WorkspaceSummary: {
+            /**
+             * Format: int64
+             * @description 워크스페이스 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description 워크스페이스 이름
+             * @example My Team
+             */
+            name?: string;
+        };
+        ProjectSummary: {
+            /**
+             * Format: int64
+             * @description 프로젝트 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description 프로젝트 이름
+             * @example Q2 Planning
+             */
+            name?: string;
+        };
+        MemberSummary: {
+            /**
+             * Format: int64
+             * @description 멤버 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description 이름
+             * @example 홍길동
+             */
+            name?: string;
+            /**
+             * @description 이메일
+             * @example user@example.com
+             */
+            email?: string;
+        };
+        WorkspaceDetail: {
+            /**
+             * Format: int64
+             * @description 워크스페이스 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description 워크스페이스 이름
+             * @example My Team
+             */
+            name?: string;
+            members?: components["schemas"]["MemberSummary"][];
+        };
+        ProjectDetail: {
+            /**
+             * Format: int64
+             * @description 프로젝트 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description 프로젝트 이름
+             * @example Q2 Planning
+             */
+            name?: string;
+            /**
+             * @description Notion 루트 페이지 ID
+             * @example abc1234567890def
+             */
+            notionRootPageId?: string;
+            members?: components["schemas"]["ProjectMemberSummary"][];
+        };
+        ProjectMemberSummary: {
+            /**
+             * Format: int64
+             * @description 멤버 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description 이름
+             * @example 홍길동
+             */
+            name?: string;
+            /**
+             * @description 역할
+             * @enum {string}
+             */
+            role?: "ADMIN" | "MEMBER";
+        };
+        WebhookResponse: {
+            /**
+             * @description 설정된 Webhook URL (미설정 시 null)
+             * @example https://hooks.slack.com/services/xxx/yyy/zzz
+             */
+            url?: string | null;
+        };
+        PageResponseValidationRunResponse: {
+            content?: components["schemas"]["ValidationRunResponse"][];
+            /**
+             * Format: int64
+             * @description 전체 항목 수
+             * @example 100
+             */
+            totalElements?: number;
+            /**
+             * Format: int32
+             * @description 전체 페이지 수
+             * @example 5
+             */
+            totalPages?: number;
+            /**
+             * Format: int32
+             * @description 현재 페이지 (0-based)
+             * @example 0
+             */
+            page?: number;
+            /**
+             * Format: int32
+             * @description 페이지 크기
+             * @example 20
+             */
+            size?: number;
+        };
+        ValidationRunResponse: {
+            /**
+             * Format: int64
+             * @description 검증 실행 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 검증 대상 엣지 ID
+             * @example 1
+             */
+            edgeId?: number;
+            /**
+             * @description 검증 상태
+             * @enum {string}
+             */
+            status?: "PENDING" | "SUCCESS" | "FAILED";
+            /**
+             * Format: date-time
+             * @description 실행 시각
+             */
+            createdAt?: string;
+        };
+        TypeMappingResponse: {
+            /**
+             * @description Notion 페이지 ID
+             * @example abc1234567890def
+             */
+            notionPageId?: string;
+            /**
+             * @description Notion 페이지 제목
+             * @example 회의록
+             */
+            notionPageTitle?: string;
+            /**
+             * @description 문서 타입
+             * @enum {string}
+             */
+            documentType?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+        };
+        TypeAssigneeResponse: {
+            /**
+             * @description 문서 타입
+             * @enum {string}
+             */
+            documentType?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+            /**
+             * Format: int64
+             * @description 담당자 워크스페이스 멤버 ID (null이면 담당자 없음)
+             * @example 1
+             */
+            assigneeMemberId?: number | null;
+        };
+        RuleResponse: {
+            /**
+             * Format: int64
+             * @description 룰 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description 출발 문서 타입
+             * @enum {string}
+             */
+            sourceType?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+            /**
+             * @description 도착 문서 타입
+             * @enum {string}
+             */
+            targetType?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+            /**
+             * @description 체크 항목
+             * @example 범위 일치 여부
+             */
+            checkItem?: string;
+            default?: boolean;
+        };
+        EdgeProposalResponse: {
+            /**
+             * Format: int64
+             * @description 연결 제안 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 출발 문서 ID
+             * @example 1
+             */
+            sourceDocumentId?: number;
+            /**
+             * Format: int64
+             * @description 도착 문서 ID
+             * @example 2
+             */
+            targetDocumentId?: number;
+            /**
+             * Format: double
+             * @description 유사도 점수 (0.0 ~ 1.0)
+             * @example 0.87
+             */
+            similarityScore?: number;
+        };
+        EdgeResponse: {
+            /**
+             * Format: int64
+             * @description 엣지 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 출발 문서 ID
+             * @example 1
+             */
+            sourceDocumentId?: number;
+            /**
+             * Format: int64
+             * @description 도착 문서 ID
+             * @example 2
+             */
+            targetDocumentId?: number;
+            /**
+             * @description 체크 항목
+             * @example 범위 일치 여부
+             */
+            checkItem?: string;
+            /**
+             * @description 충돌 상태
+             * @enum {string}
+             */
+            conflictStatus?: "NONE" | "CONFLICT";
+        };
+        GraphNodeResponse: {
+            /**
+             * Format: int64
+             * @description 문서 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description 문서 제목
+             * @example 2024-01 스프린트 회의록
+             */
+            title?: string;
+            /**
+             * @description 문서 타입
+             * @enum {string}
+             */
+            type?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+            /**
+             * Format: int64
+             * @description 담당자 워크스페이스 멤버 ID (없으면 null)
+             * @example 1
+             */
+            assigneeMemberId?: number | null;
+        };
+        ProjectGraphResponse: {
+            nodes?: components["schemas"]["GraphNodeResponse"][];
+            edges?: components["schemas"]["EdgeResponse"][];
+            proposals?: components["schemas"]["EdgeProposalResponse"][];
+        };
+        DocumentSummary: {
+            /**
+             * Format: int64
+             * @description 문서 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description Notion 페이지 ID
+             * @example abc1234567890def
+             */
+            notionPageId?: string;
+            /**
+             * @description 문서 제목
+             * @example 2024-01 스프린트 회의록
+             */
+            title?: string;
+            /**
+             * @description 문서 타입
+             * @enum {string}
+             */
+            type?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+        };
+        PageResponseDocumentSummary: {
+            content?: components["schemas"]["DocumentSummary"][];
+            /**
+             * Format: int64
+             * @description 전체 항목 수
+             * @example 100
+             */
+            totalElements?: number;
+            /**
+             * Format: int32
+             * @description 전체 페이지 수
+             * @example 5
+             */
+            totalPages?: number;
+            /**
+             * Format: int32
+             * @description 현재 페이지 (0-based)
+             * @example 0
+             */
+            page?: number;
+            /**
+             * Format: int32
+             * @description 페이지 크기
+             * @example 20
+             */
+            size?: number;
+        };
+        ConflictResponse: {
+            /**
+             * Format: int64
+             * @description 충돌 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * Format: int64
+             * @description 연결된 엣지 ID
+             * @example 1
+             */
+            edgeId?: number;
+            /**
+             * Format: int64
+             * @description 출발 문서 ID
+             * @example 1
+             */
+            sourceDocumentId?: number;
+            /**
+             * Format: int64
+             * @description 도착 문서 ID
+             * @example 2
+             */
+            targetDocumentId?: number;
+            /**
+             * @description 충돌 구간 (AI가 식별한 원문 발췌)
+             * @example 3.2절 범위 정의 항목
+             */
+            conflictSection?: string;
+            /**
+             * @description 충돌 원인
+             * @example planning의 범위가 requirements에 반영되지 않음
+             */
+            cause?: string;
+            /**
+             * @description 수정 제안
+             * @example requirements 3.2절에 해당 기능 범위 추가 필요
+             */
+            suggestion?: string;
+            /**
+             * Format: date-time
+             * @description 무시 처리 시각 (미무시 시 null)
+             */
+            ignoredAt?: string | null;
+            /**
+             * @description 무시 사유 (선택)
+             * @example 의도된 차이로 확인됨
+             */
+            ignoreReason?: string | null;
+        };
+        PageResponseConflictResponse: {
+            content?: components["schemas"]["ConflictResponse"][];
+            /**
+             * Format: int64
+             * @description 전체 항목 수
+             * @example 100
+             */
+            totalElements?: number;
+            /**
+             * Format: int32
+             * @description 전체 페이지 수
+             * @example 5
+             */
+            totalPages?: number;
+            /**
+             * Format: int32
+             * @description 현재 페이지 (0-based)
+             * @example 0
+             */
+            page?: number;
+            /**
+             * Format: int32
+             * @description 페이지 크기
+             * @example 20
+             */
+            size?: number;
+        };
+        DocumentDetail: {
+            /**
+             * Format: int64
+             * @description 문서 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description Notion 페이지 ID
+             * @example abc1234567890def
+             */
+            notionPageId?: string;
+            /**
+             * @description 문서 제목
+             * @example 2024-01 스프린트 회의록
+             */
+            title?: string;
+            /**
+             * @description 문서 타입
+             * @enum {string}
+             */
+            type?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
+            /**
+             * Format: int64
+             * @description 담당자 워크스페이스 멤버 ID (없으면 null)
+             * @example 1
+             */
+            assigneeMemberId?: number | null;
+        };
+        UserResponse: {
+            /**
+             * Format: int64
+             * @description 사용자 ID
+             * @example 1
+             */
+            id?: number;
+            /**
+             * @description 이메일
+             * @example user@example.com
+             */
+            email?: string;
+            /**
+             * @description 이름
+             * @example 홍길동
+             */
+            name?: string;
+        };
+    };
     responses: never;
     parameters: never;
     requestBodies: never;
@@ -14,4 +1216,906 @@ export interface components {
     pathItems: never;
 }
 export type $defs = Record<string, never>;
-export type operations = Record<string, never>;
+export interface operations {
+    getWebhook: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["WebhookResponse"];
+                };
+            };
+        };
+    };
+    updateWebhook: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateWebhookRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getTypeMappings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["TypeMappingResponse"][];
+                };
+            };
+        };
+    };
+    updateTypeMappings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateTypeMappingsRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getTypeAssignees: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["TypeAssigneeResponse"][];
+                };
+            };
+        };
+    };
+    updateTypeAssignees: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateTypeAssigneesRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["WorkspaceSummary"][];
+                };
+            };
+        };
+    };
+    create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateWorkspaceRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["IdResponse"];
+                };
+            };
+        };
+    };
+    list_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspaceId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ProjectSummary"][];
+                };
+            };
+        };
+    };
+    create_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                workspaceId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateProjectRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["IdResponse"];
+                };
+            };
+        };
+    };
+    inviteMember: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InviteMemberRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["IdResponse"];
+                };
+            };
+        };
+    };
+    receiveWebhook: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NotionWebhookPayload"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    sync: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listRules: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RuleResponse"][];
+                };
+            };
+        };
+    };
+    createRule: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateRuleRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["IdResponse"];
+                };
+            };
+        };
+    };
+    acceptProposal: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                proposalId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["IdResponse"];
+                };
+            };
+        };
+    };
+    assignMember: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssignMemberRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["IdResponse"];
+                };
+            };
+        };
+    };
+    listEdges: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["EdgeResponse"][];
+                };
+            };
+        };
+    };
+    createEdge: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateEdgeRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["IdResponse"];
+                };
+            };
+        };
+    };
+    ignore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["IgnoreConflictRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    unignore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    removeMember: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                memberId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    updateMemberRole: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                memberId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateProjectMemberRoleRequest"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["WorkspaceDetail"];
+                };
+            };
+        };
+    };
+    get_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ProjectDetail"];
+                };
+            };
+        };
+    };
+    delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listValidationRuns: {
+        parameters: {
+            query?: {
+                page?: number;
+                size?: number;
+            };
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseValidationRunResponse"];
+                };
+            };
+        };
+    };
+    listProposals: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["EdgeProposalResponse"][];
+                };
+            };
+        };
+    };
+    getGraph: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ProjectGraphResponse"];
+                };
+            };
+        };
+    };
+    list_2: {
+        parameters: {
+            query?: {
+                page?: number;
+                size?: number;
+            };
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseDocumentSummary"];
+                };
+            };
+        };
+    };
+    listByProject: {
+        parameters: {
+            query?: {
+                page?: number;
+                size?: number;
+            };
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseConflictResponse"];
+                };
+            };
+        };
+    };
+    oauthStart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    myInbox: {
+        parameters: {
+            query?: {
+                page?: number;
+                size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseConflictResponse"];
+                };
+            };
+        };
+    };
+    get_2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["DocumentDetail"];
+                };
+            };
+        };
+    };
+    me: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["UserResponse"];
+                };
+            };
+        };
+    };
+    removeMember_1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                memberId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deleteRule: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                ruleId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    rejectProposal: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                proposalId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deleteEdge: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+                edgeId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    logout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+}

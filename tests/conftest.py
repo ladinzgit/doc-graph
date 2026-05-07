@@ -67,13 +67,14 @@ def backend(backend_image, postgres, wiremock, network):
         .with_env("SPRING_DATASOURCE_URL", f"jdbc:postgresql://postgres:5432/{postgres.dbname}")
         .with_env("SPRING_DATASOURCE_USERNAME", postgres.username)
         .with_env("SPRING_DATASOURCE_PASSWORD", postgres.password)
-        .with_exposed_ports(8080)
+        .with_exposed_ports(8080, 9090)
     )
     container.start()
     host = container.get_container_host_ip()
-    port = container.get_exposed_port(8080)
-    base_url = f"http://{host}:{port}"
-    _wait_for_url(f"{base_url}/actuator/health")
+    api_port = container.get_exposed_port(8080)
+    mgmt_port = container.get_exposed_port(9090)
+    base_url = f"http://{host}:{api_port}/api"
+    _wait_for_url(f"http://{host}:{mgmt_port}/actuator/health")
     yield base_url
     container.stop()
 
