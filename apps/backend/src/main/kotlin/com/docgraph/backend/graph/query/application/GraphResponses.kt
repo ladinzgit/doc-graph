@@ -28,8 +28,8 @@ data class EdgeResponse(
     val sourceDocumentId: Long,
     @Schema(description = "도착 문서 ID", example = "2")
     val targetDocumentId: Long,
-    @Schema(description = "체크 항목", example = "범위 일치 여부")
-    val checkItem: String,
+    @Schema(description = "검증 기준", example = "범위 일치 여부")
+    val validationCriterion: String,
     @Schema(description = "충돌 상태")
     val conflictStatus: ConflictStatus,
 )
@@ -52,8 +52,8 @@ data class RuleResponse(
     val sourceType: DocumentType,
     @Schema(description = "도착 문서 타입")
     val targetType: DocumentType,
-    @Schema(description = "체크 항목", example = "범위 일치 여부")
-    val checkItem: String,
+    @Schema(description = "검증 기준", example = "범위 일치 여부")
+    val validationCriterion: String,
     @Schema(description = "기본 제공 룰 여부", example = "false")
     val isDefault: Boolean,
 )

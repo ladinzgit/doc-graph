@@ -690,10 +690,10 @@ export interface components {
              */
             targetType?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
             /**
-             * @description 체크 항목
+             * @description 검증 기준
              * @example 범위 일치 여부
              */
-            checkItem?: string;
+            validationCriterion?: string;
         };
         AssignMemberRequest: {
             /**
@@ -722,10 +722,10 @@ export interface components {
              */
             targetDocumentId?: number;
             /**
-             * @description 체크 항목
+             * @description 검증 기준
              * @example 범위 일치 여부
              */
-            checkItem?: string;
+            validationCriterion?: string;
         };
         IgnoreConflictRequest: {
             /**
@@ -942,10 +942,10 @@ export interface components {
              */
             targetType?: "meeting_notes" | "planning" | "requirements" | "design" | "research";
             /**
-             * @description 체크 항목
+             * @description 검증 기준
              * @example 범위 일치 여부
              */
-            checkItem?: string;
+            validationCriterion?: string;
             default?: boolean;
         };
         EdgeProposalResponse: {
@@ -994,10 +994,10 @@ export interface components {
              */
             targetDocumentId?: number;
             /**
-             * @description 체크 항목
+             * @description 검증 기준
              * @example 범위 일치 여부
              */
-            checkItem?: string;
+            validationCriterion?: string;
             /**
              * @description 충돌 상태
              * @enum {string}
