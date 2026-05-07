@@ -28,7 +28,7 @@ DB 비밀번호·AI API 키·Notion OAuth 앱 자격증명은 Secrets Manager에
 | --- | --- | --- |
 | 프론트엔드 | React (TypeScript) | S3 + CloudFront 배포 |
 | API 서버 + Webhook + AI 호출 | Kotlin, Spring Boot 4, Java 21 | Docker 컨테이너화, ECS/Fargate 배포 |
-| DB | RDS PostgreSQL 17 + pgvector | 유사도 검색: 하이브리드 (임베딩 + 키워드) |
+| DB | RDS PostgreSQL 17 + pg_trgm | 유사도 검색: 키워드 매칭 |
 | API 명세 | springdoc-openapi (OpenAPI 3.1) | TS 타입 자동 생성 |
 | 문서 소스 | Notion API (OAuth) + Webhook | 페이지 변경 이벤트 수신 |
 | 알림 | 인앱 표시 + Webhook (Slack/Discord 등) | Webhook URL 프로젝트별 설정 |
