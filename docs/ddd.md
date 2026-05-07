@@ -43,16 +43,43 @@ validation/command/interfaces/event/ValidationPairCreatedEventListener.kt   # @E
 
 ### 읽기 — Query API
 
+읽기 연산은 **연산 단위로 분리**한다. 한 도메인이 여러 read 연산을 가지면 각각 별 인터페이스 + 별 핸들러로 둔다.
+
 - **인터페이스 위치**: 발행 도메인의 `query/application/`
-- **인터페이스 이름**: `<Domain>QueryApi` (예: `DocumentQueryApi`)
-- **구현체 이름**: `<Domain>QueryService` (예: `DocumentQueryService`)
+- **인터페이스 이름**: `<Verb><Target>(By<Criteria>)?Query` (Kotlin `fun interface`, 단일 메서드 `handle(args)`)
+- **구현체 이름**: `<QueryName>Handler`
+- **구현체 위치**: 발행 도메인의 `query/application/` (QueryDSL 등 영속 분리 필요 시 `query/infra/`로 별도 분리 가능)
 - **호출 측**: HTTP Controller(`query/interfaces/api/`)와 cross-domain 호출자가 같은 인터페이스 공유
+
+**Verb 의미 매핑** (연산 의미에 맞춰 선택):
+
+| Verb | 사용 | 반환 |
+| --- | --- | --- |
+| `Get` | 존재 강제 (없으면 throw) | non-null |
+| `Find` | nullable 단건 | nullable / Optional |
+| `Search` | 조건 기반 필터 | List |
+| `List` | 단순 컬렉션 | List |
+| `Count` | 개수 | Long |
+| `Exists` | 존재 여부 | Boolean |
 
 ```
 # 예시: validation → document
-document/query/application/DocumentQueryApi.kt        # 인터페이스
-document/query/application/DocumentQueryService.kt    # 구현체
-validation/command/application/ValidationService.kt   # 의존성 주입
+document/query/application/FindDocumentByIdQuery.kt          # 인터페이스 (fun interface)
+document/query/application/FindDocumentByIdQueryHandler.kt   # 구현체
+validation/command/application/ValidationService.kt          # 의존성 주입
+```
+
+```kotlin
+// FindDocumentByIdQuery.kt
+fun interface FindDocumentByIdQuery {
+    fun handle(documentId: Long): DocumentDetail?
+}
+
+// FindDocumentByIdQueryHandler.kt
+@Service
+class FindDocumentByIdQueryHandler(...) : FindDocumentByIdQuery {
+    override fun handle(documentId: Long): DocumentDetail? = ...
+}
 ```
 
 ## Command / Query 분리 원칙
@@ -92,23 +119,7 @@ validation/command/application/ValidationService.kt   # 의존성 주입
 
 | 레이어 | DTO 종류 | 예시 파일 |
 | --- | --- | --- |
-| `command/interfaces/api/` | Web Request | `UserRequests.kt` |
-| `command/application/` | Command 객체 | `UserCommands.kt` |
-| `query/application/` | Query 객체 | `UserQueries.kt` |
-| `query/application/` | Response DTO | `UserResponses.kt` |
-
-**파일 구성**: 관련 DTO는 하나의 파일로 묶는다. Kotlin은 파일 하나에 여러 top-level 클래스를 둘 수 있으므로, 중첩 클래스 없이 파일 단위로 그룹핑하는 것이 관용적이다.
-
-```kotlin
-// UserRequests.kt (command/interfaces/api/)
-data class UserSignUpRequest(val email: String, val name: String)
-
-// UserCommands.kt (command/application/)
-data class UserSignUpCommand(val email: String, val name: String)
-
-// UserQueries.kt (query/application/)
-data class UserSearchQuery(val name: String?, val role: Role?, val page: Int)
-
-// UserResponses.kt (query/application/)
-data class UserSummaryResponse(val id: Long, val name: String)
-```
+| `command/interfaces/api/` | Web Request | `UserSignUpRequest.kt` |
+| `command/application/` | Command 객체 | `UserSignUpCommand.kt` |
+| `query/application/` | Query 객체 (있으면) | `UserSearchQuery.kt` |
+| `query/application/` | Response DTO | `UserSummaryResponse.kt` |
