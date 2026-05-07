@@ -2,7 +2,34 @@
 
 ## 개요
 
-7개 도메인으로 구성한다. 전체 흐름은 두 축으로 나뉜다.
+7개 도메인으로 구성한다.
+
+```mermaid
+flowchart LR
+    Auth[auth]
+    Workspace[workspace]
+    Project[project]
+    Document[document]
+    Graph[graph]
+    Validation[validation]
+    Notification[notification]
+
+    Workspace -.-> Auth
+    Project -.-> Workspace
+    Document -.-> Project
+
+    Document --> Graph
+    Graph --> Validation
+    Validation --> Graph
+    Validation --> Notification
+    Validation --> Document
+    Document --> Validation
+    Validation -.-> Document
+```
+
+> 실선: 이벤트 (쓰기) / 점선: Query API (읽기)
+
+전체 흐름은 두 축으로 나뉜다.
 
 ### 변경 감지
 
