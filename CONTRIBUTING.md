@@ -40,6 +40,6 @@ feat(backend): webhook 수신 어댑터 추가
 fix(api-types): generate 스크립트 종료 코드 처리
 docs: 도메인 간 통신 컨벤션 정리
 refactor(backend): validation worker를 단일 메서드로 통합
-test(backend): ValidationRun 라이프사이클 시나리오 추가
+test(backend): ValidationTask 라이프사이클 시나리오 추가
 chore: gitignore에 build 산출물 추가
 ```

@@ -2,7 +2,7 @@ package com.docgraph.backend.validation.query.interfaces.api
 
 import com.docgraph.backend.common.PageResponse
 import com.docgraph.backend.validation.query.application.ConflictResponse
-import com.docgraph.backend.validation.query.application.ValidationRunResponse
+import com.docgraph.backend.validation.query.application.ValidationTaskResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
@@ -34,13 +34,13 @@ class ValidationQueryController {
         TODO()
     }
 
-    @GetMapping("/projects/{id}/validation-runs")
-    @Operation(summary = "검증 실행 이력")
-    fun listValidationRuns(
+    @GetMapping("/projects/{id}/validation-tasks")
+    @Operation(summary = "검증 작업 이력")
+    fun listValidationTasks(
         @PathVariable id: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int,
-    ): ResponseEntity<PageResponse<ValidationRunResponse>> {
+    ): ResponseEntity<PageResponse<ValidationTaskResponse>> {
         TODO()
     }
 }

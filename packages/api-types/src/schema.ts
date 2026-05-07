@@ -304,15 +304,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/projects/{id}/validation-runs": {
+    "/projects/{id}/validation-tasks": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** 검증 실행 이력 */
-        get: operations["listValidationRuns"];
+        /** 검증 작업 이력 */
+        get: operations["listValidationTasks"];
         put?: never;
         post?: never;
         delete?: never;
@@ -843,8 +843,8 @@ export interface components {
              */
             url?: string | null;
         };
-        PageResponseValidationRunResponse: {
-            content?: components["schemas"]["ValidationRunResponse"][];
+        PageResponseValidationTaskResponse: {
+            content?: components["schemas"]["ValidationTaskResponse"][];
             /**
              * Format: int64
              * @description 전체 항목 수
@@ -870,10 +870,10 @@ export interface components {
              */
             size?: number;
         };
-        ValidationRunResponse: {
+        ValidationTaskResponse: {
             /**
              * Format: int64
-             * @description 검증 실행 ID
+             * @description 검증 작업 ID
              * @example 1
              */
             id?: number;
@@ -890,7 +890,7 @@ export interface components {
             status?: "PENDING" | "SUCCESS" | "FAILED";
             /**
              * Format: date-time
-             * @description 실행 시각
+             * @description 생성 시각
              */
             createdAt?: string;
         };
@@ -1814,7 +1814,7 @@ export interface operations {
             };
         };
     };
-    listValidationRuns: {
+    listValidationTasks: {
         parameters: {
             query?: {
                 page?: number;
@@ -1834,7 +1834,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["PageResponseValidationRunResponse"];
+                    "*/*": components["schemas"]["PageResponseValidationTaskResponse"];
                 };
             };
         };

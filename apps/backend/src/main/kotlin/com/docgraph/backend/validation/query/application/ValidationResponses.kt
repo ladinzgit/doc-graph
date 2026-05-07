@@ -25,13 +25,13 @@ data class ConflictResponse(
     val ignoreReason: String?,
 )
 
-data class ValidationRunResponse(
-    @Schema(description = "검증 실행 ID", example = "1")
+data class ValidationTaskResponse(
+    @Schema(description = "검증 작업 ID", example = "1")
     val id: Long,
     @Schema(description = "검증 대상 엣지 ID", example = "1")
     val edgeId: Long,
     @Schema(description = "검증 상태")
     val status: ValidationStatus,
-    @Schema(description = "실행 시각")
+    @Schema(description = "생성 시각")
     val createdAt: OffsetDateTime,
 )
