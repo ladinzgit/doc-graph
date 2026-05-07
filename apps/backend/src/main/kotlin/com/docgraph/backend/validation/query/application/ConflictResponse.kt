@@ -23,14 +23,3 @@ data class ConflictResponse(
     @Schema(description = "무시 사유 (선택)", example = "의도된 차이로 확인됨")
     val ignoreReason: String?,
 )
-
-data class ValidationTaskResponse(
-    @Schema(description = "검증 작업 ID", example = "1")
-    val id: Long,
-    @Schema(description = "검증 대상 엣지 ID", example = "1")
-    val edgeId: Long,
-    @Schema(description = "검증 상태")
-    val status: ValidationStatus,
-    @Schema(description = "생성 시각")
-    val createdAt: OffsetDateTime,
-)
