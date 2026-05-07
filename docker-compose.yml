@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17-alpine
+    image: postgres:${POSTGRES_VERSION:?}-alpine
     environment:
       POSTGRES_DB: docgraph
       POSTGRES_USER: docgraph

@@ -7,7 +7,7 @@
 | 단위 | 단일 메서드/클래스, 모든 의존성 Mock | JUnit 5, MockK | `apps/backend/` |
 | 슬라이스 | 단일 레이어 + 그 레이어가 연동하는 인프라 | JUnit 5, Testcontainers, MockMvc | `apps/backend/` |
 | 컴포넌트 | 모든 레이어 + 실제 인프라 + 외부 API Mock | JUnit 5, Testcontainers, WireMock, `@SpringBootTest` | `apps/backend/` |
-| 시스템 | 전체 서비스를 실제로 띄운 상태에서 API 호출 | pytest, docker-compose | `tests/` |
+| 시스템 | 전체 서비스를 실제로 띄운 상태에서 API 호출 | pytest, Testcontainers, WireMock | `tests/` |
 
 ## 커버리지 원칙
 
@@ -44,9 +44,9 @@
 
 ### 시스템 테스트
 
-- docker-compose로 백엔드를 실제로 띄운 상태에서 pytest로 API 직접 호출
+- Testcontainers가 PostgreSQL · WireMock · Backend 컨테이너를 자동 기동한 상태에서 pytest로 API 직접 호출
 - 서비스 전체의 비즈니스 흐름 검증
-- `tests/`에서 `uv run pytest`로 실행
+- `tests/`에서 `uv run pytest`로 실행 (Docker 데몬 필요)
 
 ## 운영 원칙
 
