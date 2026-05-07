@@ -5,7 +5,7 @@
 | 레벨 | 범위 | 도구 | 위치 |
 | --- | --- | --- | --- |
 | 단위 | 단일 메서드/클래스, 모든 의존성 Mock | JUnit 5, MockK | `apps/backend/` |
-| 통합 | 실제 인프라와의 연동 (Repository/Service 레벨) | JUnit 5, Testcontainers | `apps/backend/` |
+| 슬라이스 | 단일 레이어 + 그 레이어가 연동하는 인프라 | JUnit 5, Testcontainers, MockMvc | `apps/backend/` |
 | 컴포넌트 | 모든 레이어 + 실제 인프라 + 외부 API Mock | JUnit 5, Testcontainers, WireMock, `@SpringBootTest` | `apps/backend/` |
 | 시스템 | 전체 서비스를 실제로 띄운 상태에서 API 호출 | pytest, docker-compose | `tests/` |
 
@@ -14,11 +14,11 @@
 ```
         [ 시스템 ]          ← Happy Path만
       [ 컴포넌트  ]         ← Happy Path 위주, 핵심 예외
-    [   통합     ]          ← 인프라 연동 엣지케이스
+    [  슬라이스   ]          ← 인프라 연동 엣지케이스
   [     단위       ]        ← 모든 엣지케이스, 경계값, 예외 흐름
 ```
 
-- **단위/통합**: 엣지케이스, 경계값, 실패 케이스를 최대한 이 레벨에서 소진한다.
+- **단위/슬라이스**: 엣지케이스, 경계값, 실패 케이스를 최대한 이 레벨에서 소진한다.
 - **컴포넌트**: 주요 흐름 위주. 레이어 통합 자체에서만 발생할 수 있는 예외는 추가한다.
 - **시스템**: Happy Path 중심. 비즈니스 핵심 시나리오가 실제 환경에서 동작하는지 확인한다.
 
@@ -31,10 +31,10 @@
 - 단일 메서드/클래스의 로직을 격리된 상태에서 검증
 - 외부 의존성(DB, 외부 API 등)은 모두 MockK로 대체
 
-### 통합 테스트
+### 슬라이스 테스트
 
-- Testcontainers가 PostgreSQL 컨테이너를 자동으로 띄워 실제 DB와 연동
-- 특정 레이어(Repository, Service 등)가 인프라와 올바르게 연동되는지 검증
+- Spring 슬라이스 어노테이션(`@DataJpaTest`, `@WebMvcTest` 등)으로 단일 레이어만 잘라 띄움
+- 해당 레이어가 직접 연동하는 인프라(DB, MockMvc 등)만 실제 또는 동등한 도구로 사용. PostgreSQL은 Testcontainers
 
 ### 컴포넌트 테스트
 
