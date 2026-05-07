@@ -38,6 +38,8 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+	implementation("org.springframework.retry:spring-retry:2.0.12")
+	implementation("org.springframework:spring-aspects")
 	testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
