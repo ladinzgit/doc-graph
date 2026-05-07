@@ -23,13 +23,36 @@ com.docgraph.backend/
 
 `interfaces/`는 인바운드 진입점을 나타낸다. REST(`api/`)와 Spring Application Event(`event/`) 외에도 Batch, Scheduler 등이 추가될 수 있다.
 
-도메인 이벤트는 **발행하는 도메인의 `command/domain/`** 에 정의한다. 수신하는 도메인은 `interfaces/event/` 리스너에서 해당 이벤트 클래스를 참조한다 (단방향 의존).
+## 도메인 간 통신
+
+쓰기는 이벤트, 읽기는 Query API로 한다. 양쪽 모두 단방향 의존이며, 발행 도메인이 노출한 정의(이벤트 클래스, Query API 인터페이스)만 import한다.
+
+### 쓰기 — 이벤트
+
+- **이벤트 정의 위치**: 발행 도메인의 `command/domain/`
+- **이벤트 이름**: `<Subject><PastAction>Event` (예: `ValidationPairCreatedEvent`)
+- **리스너 위치**: 수신 도메인의 `interfaces/event/`
+- **리스너 이름**: `<SourceDomain>EventListener` (예: `GraphEventListener`)
 
 ```
-# 예시: graph → validation 이벤트
-graph/command/domain/ValidationRequiredEvent.kt      # 이벤트 정의
-graph/command/application/GraphService.kt            # publishEvent() 호출
-validation/command/interfaces/event/ValidationEventListener.kt  # @EventListener
+# 예시: graph → validation
+graph/command/domain/ValidationPairCreatedEvent.kt          # 이벤트
+graph/command/application/GraphService.kt                   # publishEvent() 호출
+validation/command/interfaces/event/GraphEventListener.kt   # @EventListener
+```
+
+### 읽기 — Query API
+
+- **인터페이스 위치**: 발행 도메인의 `query/application/`
+- **인터페이스 이름**: `<Domain>QueryApi` (예: `DocumentQueryApi`)
+- **구현체 이름**: `<Domain>QueryService` (예: `DocumentQueryService`)
+- **호출 측**: HTTP Controller(`query/interfaces/api/`)와 cross-domain 호출자가 같은 인터페이스 공유
+
+```
+# 예시: validation → document
+document/query/application/DocumentQueryApi.kt        # 인터페이스
+document/query/application/DocumentQueryService.kt    # 구현체
+validation/command/application/ValidationService.kt   # 의존성 주입
 ```
 
 ## Command / Query 분리 원칙
@@ -71,6 +94,7 @@ validation/command/interfaces/event/ValidationEventListener.kt  # @EventListener
 | --- | --- | --- |
 | `command/interfaces/api/` | Web Request | `UserRequests.kt` |
 | `command/application/` | Command 객체 | `UserCommands.kt` |
+| `query/application/` | Query 객체 | `UserQueries.kt` |
 | `query/application/` | Response DTO | `UserResponses.kt` |
 
 **파일 구성**: 관련 DTO는 하나의 파일로 묶는다. Kotlin은 파일 하나에 여러 top-level 클래스를 둘 수 있으므로, 중첩 클래스 없이 파일 단위로 그룹핑하는 것이 관용적이다.
@@ -81,6 +105,9 @@ data class UserSignUpRequest(val email: String, val name: String)
 
 // UserCommands.kt (command/application/)
 data class UserSignUpCommand(val email: String, val name: String)
+
+// UserQueries.kt (query/application/)
+data class UserSearchQuery(val name: String?, val role: Role?, val page: Int)
 
 // UserResponses.kt (query/application/)
 data class UserSummaryResponse(val id: Long, val name: String)
