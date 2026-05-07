@@ -13,7 +13,7 @@ __pycache__/
 .claude/
 .codex/
 .agents/
-.claude/CLAUDE.md
+CLAUDE.md
 AGENTS.md
 GEMINI.md
 
