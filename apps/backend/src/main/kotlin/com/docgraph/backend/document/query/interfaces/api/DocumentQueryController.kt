@@ -1,6 +1,6 @@
 package com.docgraph.backend.document.query.interfaces.api
 
-import com.docgraph.backend.common.PageResponse
+import com.docgraph.backend.web.PageResponse
 import com.docgraph.backend.document.query.application.DocumentDetail
 import com.docgraph.backend.document.query.application.DocumentSummary
 import io.swagger.v3.oas.annotations.Operation

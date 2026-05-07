@@ -1,8 +1,7 @@
 package com.docgraph.backend.project.query.application
 
 
-import com.docgraph.backend.common.DocumentType
-import com.docgraph.backend.common.ProjectMemberRole
+import com.docgraph.backend.document.query.application.DocumentType
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class ProjectSummary(

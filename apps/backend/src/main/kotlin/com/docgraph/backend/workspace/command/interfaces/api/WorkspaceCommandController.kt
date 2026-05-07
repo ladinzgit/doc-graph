@@ -1,6 +1,6 @@
 package com.docgraph.backend.workspace.command.interfaces.api
 
-import com.docgraph.backend.common.IdResponse
+import com.docgraph.backend.web.IdResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag

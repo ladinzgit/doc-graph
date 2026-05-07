@@ -1,7 +1,7 @@
 package com.docgraph.backend.graph.query.application
 
-import com.docgraph.backend.common.ConflictStatus
-import com.docgraph.backend.common.DocumentType
+import com.docgraph.backend.document.query.application.DocumentType
+import com.docgraph.backend.validation.query.application.ConflictStatus
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class ProjectGraphResponse(

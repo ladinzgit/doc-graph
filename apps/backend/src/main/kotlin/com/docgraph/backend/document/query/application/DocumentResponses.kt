@@ -1,6 +1,5 @@
 package com.docgraph.backend.document.query.application
 
-import com.docgraph.backend.common.DocumentType
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class DocumentSummary(

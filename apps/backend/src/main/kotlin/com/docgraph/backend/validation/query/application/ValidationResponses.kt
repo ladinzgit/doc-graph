@@ -1,6 +1,5 @@
 package com.docgraph.backend.validation.query.application
 
-import com.docgraph.backend.common.ValidationStatus
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.OffsetDateTime
 

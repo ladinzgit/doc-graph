@@ -1,6 +1,6 @@
 package com.docgraph.backend.validation.query.interfaces.api
 
-import com.docgraph.backend.common.PageResponse
+import com.docgraph.backend.web.PageResponse
 import com.docgraph.backend.validation.query.application.ConflictResponse
 import com.docgraph.backend.validation.query.application.ValidationTaskResponse
 import io.swagger.v3.oas.annotations.Operation

@@ -1,7 +1,7 @@
 package com.docgraph.backend.graph.command.interfaces.api
 
-import com.docgraph.backend.common.DocumentType
-import com.docgraph.backend.common.IdResponse
+import com.docgraph.backend.document.query.application.DocumentType
+import com.docgraph.backend.web.IdResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag

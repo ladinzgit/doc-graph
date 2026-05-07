@@ -1,4 +1,4 @@
-package com.docgraph.backend.common
+package com.docgraph.backend.document.query.application
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
