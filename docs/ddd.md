@@ -113,6 +113,36 @@ class FindDocumentByIdQueryHandler(...) : FindDocumentByIdQuery {
 - Command: JPA Repository 구현체
 - Query: QueryDSL Repository — `application/`에 정의된 Response DTO를 프로젝션으로 반환
 
+## Command 컨벤션
+
+쓰기 진입은 Command(데이터) + Handler(처리) 페어로 표현한다. 1 Command = 1 Handler.
+
+- **Command 이름**: `<Verb><Target>Command` — 의도를 표현하는 동사. CRUD verb(`Create`/`Update`/`Delete`) 금지, 도메인 의도 verb(`Register`, `Approve`, `Assign`, `Submit`) 사용.
+- **Handler 이름**: `<CommandName>Handler`
+- **위치**: 둘 다 `<domain>/command/application/` (각각 별 파일)
+- **메서드**: `handle(command): <Id 또는 Unit>`, `@Transactional`
+- **도메인 이벤트 발행**: Handler 책임 (`ApplicationEventPublisher.publishEvent(...)`)
+
+```kotlin
+// command/application/RegisterUserCommand.kt
+data class RegisterUserCommand(val email: String, val name: String)
+
+// command/application/RegisterUserCommandHandler.kt
+@Service
+class RegisterUserCommandHandler(
+    private val userRepository: UserRepository,
+    private val publisher: ApplicationEventPublisher,
+) {
+    @Transactional
+    fun handle(command: RegisterUserCommand): Long {
+        val user = User.register(command.email, command.name)
+        userRepository.save(user)
+        publisher.publishEvent(UserRegisteredEvent(user.id))
+        return user.id
+    }
+}
+```
+
 ## DTO 배치 원칙
 
 **소비하는 레이어에 함께 둔다.** 레이어 경계에서 변환이 일어나고, 각 레이어는 자신의 데이터 구조를 소유한다.
