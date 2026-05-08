@@ -71,7 +71,7 @@ sequenceDiagram
         document->>graph: 타입 변경 통보
     end
     graph->>graph: 엣지 생성·갱신,<br/>pg_trgm 키워드 매칭으로 연결 제안 생성
-    graph->>validation: 검증 대상 쌍 전달
+    graph->>validation: ValidationPairCreatedEvent
     validation->>validation: ValidationTask(pending) 영속화
 ```
 
@@ -82,16 +82,22 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant validation
-    participant AI as AI API
     participant graph
+    participant document
+    participant AI as AI API
     participant notification
 
-    Note over validation: 비동기 worker가 pending ValidationTask 1건 수신<br/>두 문서의 본문 스냅샷·블록 row 조회
-    validation->>AI: 변경 블록 + 반대편 문서 전체 블록 + 검증 기준
-    AI-->>validation: 블록 N:M 충돌 묶음 (source_block_ids, target_block_ids, rationale)
-    validation->>graph: 엣지 상태 업데이트
+    Note over validation: ValidationTaskQueuedEvent 수신
+    validation->>graph: FindEdgeByIdQuery
+    graph-->>validation: EdgeDetail
+    validation->>document: FindDocumentByIdQuery
+    document-->>validation: DocumentDetail
+    validation->>AI: 검증 요청
+    AI-->>validation: 충돌 묶음
     alt 충돌 감지
-        validation->>notification: 충돌 감지 이벤트
+        validation->>graph: ConflictDetected
+        graph->>graph: 엣지 상태 업데이트
+        validation->>notification: ConflictDetected
         notification->>notification: Webhook 알림 발송
     end
     Note right of validation: ignoredAt이 기록된 Conflict는 재검증 시 자동 해제
