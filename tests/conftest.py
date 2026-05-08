@@ -4,12 +4,17 @@ from pathlib import Path
 
 import httpx
 import pytest
+from dotenv import load_dotenv
 from testcontainers.core.container import DockerContainer
 from testcontainers.core.image import DockerImage
 from testcontainers.core.network import Network
 from testcontainers.postgres import PostgresContainer
 
 PROJECT_ROOT = Path(__file__).parent.parent
+
+# 모노레포 루트 .env에서 환경변수 주입 — Gradle test·docker-compose와 동일 출처
+load_dotenv(PROJECT_ROOT / ".env")
+
 POSTGRES_VERSION = os.environ["POSTGRES_VERSION"]
 
 

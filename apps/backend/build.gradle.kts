@@ -71,6 +71,20 @@ tasks.bootRun {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+
+	// 모노레포 루트 .env에서 환경변수 주입 — docker-compose·pytest와 동일 출처
+	val envFile = rootProject.projectDir.resolve("../../.env").canonicalFile
+	check(envFile.exists()) { "모노레포 루트 .env 없음: ${envFile.absolutePath}" }
+	envFile.readLines()
+		.filter { it.isNotBlank() && !it.startsWith("#") }
+		.forEach {
+			val (key, value) = it.split("=", limit = 2)
+			environment(key.trim(), value.trim())
+		}
+
+	val required = listOf("POSTGRES_VERSION")
+	val missing = required.filterNot { environment.containsKey(it) }
+	check(missing.isEmpty()) { ".env 필수 환경변수 누락: $missing" }
 }
 
 tasks.register<Test>("unitTest") {

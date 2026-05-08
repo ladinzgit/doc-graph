@@ -2,27 +2,23 @@ package com.docgraph.backend.validation.command.interfaces.event
 
 import com.docgraph.backend.event.OutboxStatus
 import com.docgraph.backend.graph.command.domain.ValidationPairCreatedEvent
-import com.docgraph.backend.testcontainers.POSTGRES_IMAGE
+import com.docgraph.backend.testcontainers.TestcontainersConfig
 import com.docgraph.backend.validation.command.application.ProcessValidationTaskCommandHandler
 import com.docgraph.backend.validation.command.domain.ValidationTaskQueuedEvent
 import com.docgraph.backend.validation.command.domain.ValidationTaskRepository
+import com.ninjasquad.springmockk.MockkBean
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
-import com.ninjasquad.springmockk.MockkBean
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.transaction.event.TransactionPhase
 import org.springframework.transaction.event.TransactionalEventListener
-import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.OffsetDateTime
 import java.util.UUID
 import java.util.concurrent.CountDownLatch
@@ -60,15 +56,8 @@ class ValidationPairCreatedEventListenerTestConfig {
 
 @Tag("component")
 @SpringBootTest
-@Testcontainers
-@Import(ValidationPairCreatedEventListenerTestConfig::class)
+@Import(ValidationPairCreatedEventListenerTestConfig::class, TestcontainersConfig::class)
 class ValidationPairCreatedEventListenerTest {
-
-    companion object {
-        @Container
-        @ServiceConnection
-        val postgres = PostgreSQLContainer<Nothing>(POSTGRES_IMAGE)
-    }
 
     @Autowired lateinit var testPublisher: ValidationPairCreatedTestPublisher
 

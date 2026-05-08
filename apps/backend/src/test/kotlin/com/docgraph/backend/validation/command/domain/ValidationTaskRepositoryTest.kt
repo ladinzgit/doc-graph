@@ -1,16 +1,13 @@
 package com.docgraph.backend.validation.command.domain
 
 import com.docgraph.backend.event.OutboxStatus
-import com.docgraph.backend.testcontainers.POSTGRES_IMAGE
+import com.docgraph.backend.testcontainers.TestcontainersConfig
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection
-import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
+import org.springframework.context.annotation.Import
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.UUID
@@ -21,15 +18,10 @@ import kotlin.test.assertNull
 @Tag("slice")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Testcontainers
+@Import(TestcontainersConfig::class)
 class ValidationTaskRepositoryTest @Autowired constructor(
     private val repository: ValidationTaskRepository,
 ) {
-    companion object {
-        @Container
-        @ServiceConnection
-        val postgres = PostgreSQLContainer<Nothing>(POSTGRES_IMAGE)
-    }
 
     @Test
     fun `findByValidationPairId — 존재하면 task 반환`() {

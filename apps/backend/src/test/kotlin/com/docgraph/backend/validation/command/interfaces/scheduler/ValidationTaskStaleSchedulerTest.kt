@@ -1,24 +1,20 @@
 package com.docgraph.backend.validation.command.interfaces.scheduler
 
-import com.docgraph.backend.testcontainers.POSTGRES_IMAGE
+import com.docgraph.backend.testcontainers.TestcontainersConfig
 import com.docgraph.backend.validation.command.application.ProcessValidationTaskCommandHandler
 import com.docgraph.backend.validation.command.domain.ValidationTask
 import com.docgraph.backend.validation.command.domain.ValidationTaskQueuedEvent
 import com.docgraph.backend.validation.command.domain.ValidationTaskRepository
+import com.ninjasquad.springmockk.MockkBean
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.context.event.EventListener
-import com.ninjasquad.springmockk.MockkBean
-import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.UUID
@@ -47,15 +43,8 @@ class ValidationTaskStaleSchedulerTestConfig {
 
 @Tag("component")
 @SpringBootTest
-@Testcontainers
-@Import(ValidationTaskStaleSchedulerTestConfig::class)
+@Import(ValidationTaskStaleSchedulerTestConfig::class, TestcontainersConfig::class)
 class ValidationTaskStaleSchedulerTest {
-
-    companion object {
-        @Container
-        @ServiceConnection
-        val postgres = PostgreSQLContainer<Nothing>(POSTGRES_IMAGE)
-    }
 
     @Autowired lateinit var scheduler: ValidationTaskStaleScheduler
 
