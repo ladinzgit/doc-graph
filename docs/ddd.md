@@ -12,8 +12,8 @@ com.docgraph.backend/
     │   │   ├── api/          # REST Controller, Web Request DTO
     │   │   └── event/        # Spring ApplicationEvent 리스너 (타 도메인 이벤트 수신)
     │   ├── application/      # Application Service, Command 객체
-    │   ├── domain/           # Entity, Domain Service, Repository 인터페이스, 도메인 이벤트
-    │   └── infra/            # JPA Repository 구현체
+    │   ├── domain/           # Entity, Domain Service, Repository·외부 시스템 client 인터페이스, 도메인 이벤트
+    │   └── infra/            # JPA Repository 구현체, 외부 시스템 어댑터
     └── query/
         ├── interfaces/
         │   └── api/          # REST Controller
