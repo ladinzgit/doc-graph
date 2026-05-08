@@ -72,6 +72,9 @@ def backend(backend_image, postgres, wiremock, network):
         .with_env("SPRING_DATASOURCE_URL", f"jdbc:postgresql://postgres:5432/{postgres.dbname}")
         .with_env("SPRING_DATASOURCE_USERNAME", postgres.username)
         .with_env("SPRING_DATASOURCE_PASSWORD", postgres.password)
+        # 외부 API placeholder — wiremock이 가로채므로 실제 값 불필요
+        .with_env("AI_OPENAI_API_KEY", "test")
+        .with_env("AI_OPENAI_MODEL", "test-model")
         .with_exposed_ports(8080, 9090)
     )
     container.start()

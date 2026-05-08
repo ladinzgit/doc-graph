@@ -41,3 +41,9 @@ management:
     web:
       exposure:
         include: health
+
+# 외부 자격증명·환경별 식별자(api-key, model 등)는 정의하지 않는다 — 환경변수로만 주입.
+ai:
+  openai:
+    base-url: https://api.openai.com
+    timeout-ms: 30000

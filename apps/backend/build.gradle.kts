@@ -50,6 +50,7 @@ dependencies {
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("io.mockk:mockk:1.13.13")
 	testImplementation("com.ninja-squad:springmockk:5.0.1")
+	testImplementation("org.wiremock:wiremock-standalone:3.10.0")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -67,24 +68,33 @@ allOpen {
 
 tasks.bootRun {
 	workingDir = rootProject.projectDir
+	// 개발자 개인 자격증명을 application-local.yml(gitignored)에서 주입
+	systemProperty("spring.profiles.active", "local")
 }
 
 tasks.withType<Test> {
 	useJUnitPlatform()
 
-	// 모노레포 루트 .env에서 환경변수 주입 — docker-compose·pytest와 동일 출처
+	// 외부 자격증명은 application-test.yaml로 격리 — .env 누설 차단
+	systemProperty("spring.profiles.active", "test")
+
+	// 모노레포 루트 .env에서 인프라 변수만 화이트리스트 주입 — docker-compose·Testcontainers 동등성 강제용
+	// (자격증명·외부 API 키는 .env 출처 아님 — docs/development.md 참고)
 	val envFile = rootProject.projectDir.resolve("../../.env").canonicalFile
 	check(envFile.exists()) { "모노레포 루트 .env 없음: ${envFile.absolutePath}" }
-	envFile.readLines()
+	val infraVarsFromEnv = setOf("POSTGRES_VERSION")
+	val parsed = envFile.readLines()
 		.filter { it.isNotBlank() && !it.startsWith("#") }
-		.forEach {
+		.associate {
 			val (key, value) = it.split("=", limit = 2)
-			environment(key.trim(), value.trim())
+			key.trim() to value.trim()
 		}
+	infraVarsFromEnv.forEach { key ->
+		parsed[key]?.let { environment(key, it) }
+	}
 
-	val required = listOf("POSTGRES_VERSION")
-	val missing = required.filterNot { environment.containsKey(it) }
-	check(missing.isEmpty()) { ".env 필수 환경변수 누락: $missing" }
+	val missing = infraVarsFromEnv.filterNot { environment.containsKey(it) }
+	check(missing.isEmpty()) { ".env 필수 인프라 변수 누락: $missing" }
 }
 
 tasks.register<Test>("unitTest") {

@@ -73,3 +73,18 @@ docker compose --profile full up   # postgres + ngrok + 백엔드 컨테이너
 처음 실행 시 백엔드 이미지를 빌드하므로 시간이 소요된다.
 
 백엔드가 뜨면 Swagger UI(`http://localhost:8080/swagger-ui.html`)에서 API 명세를 확인할 수 있다.
+
+---
+
+## 외부 자격증명
+
+- `docker compose --profile full`: `.env`에 채운다 (`.env.example` 참고). 누락 시 `compose up`이 즉시 실패한다.
+- `bootRun`: `apps/backend/src/main/resources/application-local.yml` (gitignored)에 작성한다. 이 파일은 `local` 프로필로 자동 활성화된다.
+
+```yaml
+# application-local.yml
+ai:
+  openai:
+    api-key: sk-...
+    model: gpt-4o-mini
+```
