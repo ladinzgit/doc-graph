@@ -22,8 +22,7 @@ flowchart LR
     Graph --> Validation
     Validation --> Graph
     Validation --> Notification
-    Validation --> Document
-    Document --> Validation
+    Validation -.-> Graph
     Validation -.-> Document
 ```
 
