@@ -1,9 +1,5 @@
-# 환경변수
-.env
-
-# 개발자 개인 자격증명 (bootRun용 spring profile)
-**/application-local.yml
-**/application-local.yaml
+# 환경변수 (시크릿)
+.env.local
 
 # Node.js
 node_modules/

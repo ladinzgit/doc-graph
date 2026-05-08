@@ -6,13 +6,10 @@ spring:
   application:
     name: docgraph
 
-  docker:
-    compose:
-      file: ../../docker-compose.yml
-
   datasource:
     url: jdbc:postgresql://localhost:5433/docgraph
     username: docgraph
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -42,8 +39,9 @@ management:
       exposure:
         include: health
 
-# 외부 자격증명·환경별 식별자(api-key, model 등)는 정의하지 않는다 — 환경변수로만 주입.
 ai:
   openai:
     base-url: https://api.openai.com
     timeout-ms: 30000
+    api-key: ${AI_OPENAI_API_KEY}
+    model: ${AI_OPENAI_MODEL}
