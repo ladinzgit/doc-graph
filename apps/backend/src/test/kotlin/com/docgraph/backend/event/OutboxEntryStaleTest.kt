@@ -1,11 +1,13 @@
 package com.docgraph.backend.event
 
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import java.time.Duration
 import java.time.OffsetDateTime
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+@Tag("unit")
 class OutboxEntryStaleTest {
 
     private fun entry(status: OutboxStatus, lastAttemptAt: OffsetDateTime?): OutboxEntry =

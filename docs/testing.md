@@ -2,12 +2,12 @@
 
 ## 레벨 구성
 
-| 레벨 | 범위 | 도구 | 위치 |
-| --- | --- | --- | --- |
-| 단위 | 단일 메서드/클래스, 모든 의존성 Mock | JUnit 5, MockK | `apps/backend/` |
-| 슬라이스 | 단일 레이어 + 그 레이어가 연동하는 인프라 | JUnit 5, Testcontainers, MockMvc | `apps/backend/` |
-| 컴포넌트 | 모든 레이어 + 실제 인프라 + 외부 API Mock | JUnit 5, Testcontainers, WireMock, `@SpringBootTest` | `apps/backend/` |
-| 시스템 | 전체 서비스를 실제로 띄운 상태에서 API 호출 | pytest, Testcontainers, WireMock | `tests/` |
+| 레벨 | 범위 | 도구 | 위치 | 태그 |
+| --- | --- | --- | --- | --- |
+| 단위 | 단일 메서드/클래스, 모든 의존성 Mock | JUnit 5, MockK | `apps/backend/` | `@Tag("unit")` |
+| 슬라이스 | 단일 레이어 + 그 레이어가 연동하는 인프라 | JUnit 5, Testcontainers, MockMvc | `apps/backend/` | `@Tag("slice")` |
+| 컴포넌트 | 모든 레이어 + 실제 인프라 + 외부 API Mock | JUnit 5, Testcontainers, WireMock, `@SpringBootTest` | `apps/backend/` | `@Tag("component")` |
+| 시스템 | 전체 서비스를 실제로 띄운 상태에서 API 호출 | pytest, Testcontainers, WireMock | `tests/` | — |
 
 ## 커버리지 원칙
 

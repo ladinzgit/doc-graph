@@ -48,6 +48,8 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+	testImplementation("io.mockk:mockk:1.13.13")
+	testImplementation("com.ninja-squad:springmockk:5.0.1")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -69,4 +71,28 @@ tasks.bootRun {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.register<Test>("unitTest") {
+	description = "@Tag(\"unit\") 테스트만 실행"
+	group = "verification"
+	testClassesDirs = sourceSets["test"].output.classesDirs
+	classpath = sourceSets["test"].runtimeClasspath
+	useJUnitPlatform { includeTags("unit") }
+}
+
+tasks.register<Test>("sliceTest") {
+	description = "@Tag(\"slice\") 테스트만 실행"
+	group = "verification"
+	testClassesDirs = sourceSets["test"].output.classesDirs
+	classpath = sourceSets["test"].runtimeClasspath
+	useJUnitPlatform { includeTags("slice") }
+}
+
+tasks.register<Test>("componentTest") {
+	description = "@Tag(\"component\") 테스트만 실행"
+	group = "verification"
+	testClassesDirs = sourceSets["test"].output.classesDirs
+	classpath = sourceSets["test"].runtimeClasspath
+	useJUnitPlatform { includeTags("component") }
 }
