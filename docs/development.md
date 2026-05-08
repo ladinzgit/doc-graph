@@ -25,20 +25,13 @@ npm install   # JS 의존성 설치 (apps/frontend, packages/* 포함)
 
 ## 로컬 인프라 구조
 
-두 개의 compose 파일로 개발/테스트 환경을 분리한다.
+`docker-compose.yml` — 기본 인프라
 
-**`docker-compose.yml`** — 기본 인프라
-
-| 컨테이너 | 포트 | 용도 |
+| 컨테이너 | 호스트 포트 | 용도 |
 | --- | --- | --- |
-| postgres | 5432 | 개발용 DB (데이터 영구 보존) |
+| postgres | 5433 | 개발용 DB (데이터 영구 보존) |
 | ngrok | 4040 | Notion Webhook을 로컬에서 수신하기 위한 터널 |
 | backend | 8080 | 백엔드 컨테이너 (`--profile full` 시에만 실행) |
-
-**`docker-compose.test.yml`** — 시스템 테스트 overlay
-
-`uv run pytest` 실행 시 자동으로 적용된다. 직접 호출할 일은 없다.
-`postgres-test`(tmpfs, 테스트마다 초기화)를 추가하고, 백엔드가 개발 DB 대신 이 DB에 연결되도록 교체해 개발 데이터가 오염되지 않도록 한다.
 
 ---
 
@@ -47,14 +40,14 @@ npm install   # JS 의존성 설치 (apps/frontend, packages/* 포함)
 ```bash
 cd apps/backend
 ./gradlew bootRun   # docker compose(postgres + ngrok)를 자동으로 감지해 실행
-./gradlew test      # 단위/통합/컴포넌트 테스트 (TestContainers로 DB 자동 구성)
+./gradlew test      # 단위/슬라이스/컴포넌트 (Testcontainers로 DB 자동 구성, docs/testing.md 참고)
 ```
 
 ### 시스템 테스트
 
 ```bash
 cd tests
-uv run pytest   # docker-compose.test.yml overlay 스택을 자동으로 띄우고, 완료 후 내림
+uv run pytest   # Testcontainers가 PostgreSQL · WireMock · backend image 자동 빌드·기동
 ```
 
 ### API 타입 생성
