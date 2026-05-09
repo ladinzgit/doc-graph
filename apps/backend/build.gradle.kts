@@ -67,32 +67,7 @@ allOpen {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
-
-	// 외부 자격증명은 application-test.yaml로 격리 — .env/.env.local 누설 차단
 	systemProperty("spring.profiles.active", "test")
-
-	// 부모 환경(Just가 export한 .env+.env.local)의 외부 시크릿이 환경변수로 흘러들어가
-	// application-test.yaml의 더미값을 override하지 못하도록 명시 차단
-	setOf("AI_OPENAI_API_KEY", "AI_OPENAI_MODEL", "DB_PASSWORD", "NGROK_AUTHTOKEN").forEach {
-		environment.remove(it)
-	}
-
-	// 인프라 공통 변수만 .env에서 화이트리스트 주입 — docker-compose·Testcontainers 동등성 강제
-	val envFile = rootProject.projectDir.resolve("../../.env").canonicalFile
-	check(envFile.exists()) { "모노레포 루트 .env 없음: ${envFile.absolutePath}" }
-	val infraVarsFromEnv = setOf("POSTGRES_VERSION")
-	val parsed = envFile.readLines()
-		.filter { it.isNotBlank() && !it.startsWith("#") }
-		.associate {
-			val (key, value) = it.split("=", limit = 2)
-			key.trim() to value.trim()
-		}
-	infraVarsFromEnv.forEach { key ->
-		parsed[key]?.let { environment(key, it) }
-	}
-
-	val missing = infraVarsFromEnv.filterNot { environment.containsKey(it) }
-	check(missing.isEmpty()) { ".env 필수 인프라 변수 누락: $missing" }
 }
 
 tasks.register<Test>("unitTest") {

@@ -7,8 +7,8 @@ spring:
     name: docgraph
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/docgraph
-    username: docgraph
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -21,15 +21,15 @@ spring:
       client:
         registration:
           notion:
-            client-id: local-dev-placeholder
-            client-secret: local-dev-placeholder
+            client-id: ${NOTION_CLIENT_ID}
+            client-secret: ${NOTION_CLIENT_SECRET}
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: []
         provider:
           notion:
-            authorization-uri: https://api.notion.com/v1/oauth/authorize
-            token-uri: https://api.notion.com/v1/oauth/token
+            authorization-uri: ${NOTION_AUTHORIZATION_URI}
+            token-uri: ${NOTION_TOKEN_URI}
 
 management:
   server:
@@ -41,7 +41,7 @@ management:
 
 ai:
   openai:
-    base-url: https://api.openai.com
+    base-url: ${AI_OPENAI_BASE_URL}
     timeout-ms: 30000
     api-key: ${AI_OPENAI_API_KEY}
     model: ${AI_OPENAI_MODEL}

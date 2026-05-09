@@ -7,7 +7,7 @@
 | 단위 | 단일 메서드/클래스, 모든 의존성 Mock | JUnit 5, MockK | `apps/backend/` | `@Tag("unit")` |
 | 슬라이스 | 단일 레이어 + 그 레이어가 연동하는 인프라 | JUnit 5, Testcontainers, MockMvc | `apps/backend/` | `@Tag("slice")` |
 | 컴포넌트 | 모든 레이어 + 실제 인프라 + 외부 API Mock | JUnit 5, Testcontainers, WireMock, `@SpringBootTest` | `apps/backend/` | `@Tag("component")` |
-| 시스템 | 전체 서비스를 실제로 띄운 상태에서 API 호출 | pytest, Testcontainers, WireMock | `tests/` | — |
+| 시스템 | 전체 서비스를 실제로 띄운 상태에서 API 호출 | pytest, Docker Compose, WireMock | `tests/` | — |
 
 ## 커버리지 원칙
 
@@ -44,9 +44,10 @@
 
 ### 시스템 테스트
 
-- Testcontainers가 PostgreSQL · WireMock · Backend 컨테이너를 자동 기동한 상태에서 pytest로 API 직접 호출
+- `docker-compose.yml + docker-compose.test.yml`로 PostgreSQL · WireMock · Backend를 띄우고 pytest는 외부 client로 API 호출
+- 테스트 격리: autouse fixture가 매 테스트마다 wiremock reset + DB truncate (Flyway 메타테이블 제외)
 - 서비스 전체의 비즈니스 흐름 검증
-- `tests/`에서 `uv run pytest`로 실행 (Docker 데몬 필요)
+- `just systest`로 실행 (compose lifecycle 자동 관리, Docker 데몬 필요)
 
 ## 운영 원칙
 

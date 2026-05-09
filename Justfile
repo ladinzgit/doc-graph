@@ -40,9 +40,18 @@ compose-up:
 compose-down:
     sh -c '{{load-secrets}}; exec docker compose down'
 
-# Pytest 시스템 테스트 — conftest가 명시적 더미 시크릿 주입
+# Pytest 시스템 테스트 — backend 컨테이너 + wiremock에 외부 client로 접근
 systest:
-    sh -c 'cd tests && exec uv run pytest'
+    #!/usr/bin/env sh
+    set -a; [ -f .env.local ] && . ./.env.local; set +a
+    docker compose -p doc-graph-test -f docker-compose.yml -f docker-compose.test.yml --profile full up -d --build --wait
+    ec=$?
+    if [ $ec -eq 0 ]; then
+        ( cd tests && uv run pytest )
+        ec=$?
+    fi
+    docker compose -p doc-graph-test -f docker-compose.yml -f docker-compose.test.yml down -v
+    exit $ec
 
 # OpenAPI → TypeScript 타입 생성 (백엔드 실행 중이어야 함)
 gen-types:

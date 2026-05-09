@@ -1,122 +1,56 @@
 import os
-import time
-from pathlib import Path
 
 import httpx
+import psycopg
 import pytest
-from testcontainers.core.container import DockerContainer
-from testcontainers.core.image import DockerImage
-from testcontainers.core.network import Network
-from testcontainers.postgres import PostgresContainer
 
-PROJECT_ROOT = Path(__file__).parent.parent
-
-POSTGRES_VERSION = os.environ["POSTGRES_VERSION"]
-
-
-@pytest.fixture(scope="session")
-def network():
-    network = Network()
-    network.create()
-    yield network
-    network.remove()
+BACKEND_BASE_URL = "http://localhost:8080/api"
+WIREMOCK_BASE_URL = "http://localhost:8081"
+PG_DSN = (
+    "host=localhost port=5434"
+    f" user={os.environ['DB_USERNAME']}"
+    f" password={os.environ['DB_PASSWORD']}"
+    " dbname=docgraph"
+)
 
 
 @pytest.fixture(scope="session")
-def postgres(network):
-    container = (
-        PostgresContainer(f"postgres:{POSTGRES_VERSION}-alpine")
-        .with_network(network)
-        .with_network_aliases("postgres")
-    )
-    with container as pg:
-        yield pg
-
-
-@pytest.fixture(scope="session")
-def wiremock(network):
-    container = (
-        DockerContainer("wiremock/wiremock:latest")
-        .with_network(network)
-        .with_network_aliases("wiremock")
-        .with_exposed_ports(8080)
-    )
-    container.start()
-    host = container.get_container_host_ip()
-    port = container.get_exposed_port(8080)
-    base_url = f"http://{host}:{port}"
-    _wait_for_url(f"{base_url}/__admin/mappings")
-    yield WireMockHelper(base_url)
-    container.stop()
-
-
-@pytest.fixture(scope="session")
-def backend_image():
-    image = DockerImage(
-        path=str(PROJECT_ROOT / "apps" / "backend"),
-        tag="doc-graph-backend:test",
-    )
-    image.build()
-    return image.tag
-
-
-@pytest.fixture(scope="session")
-def backend(backend_image, postgres, wiremock, network):
-    container = (
-        DockerContainer(backend_image)
-        .with_network(network)
-        .with_env("SPRING_DATASOURCE_URL", f"jdbc:postgresql://postgres:5432/{postgres.dbname}")
-        .with_env("SPRING_DATASOURCE_USERNAME", postgres.username)
-        .with_env("SPRING_DATASOURCE_PASSWORD", postgres.password)
-        # 외부 API placeholder — wiremock이 가로채므로 실제 값 불필요
-        .with_env("AI_OPENAI_API_KEY", "test")
-        .with_env("AI_OPENAI_MODEL", "test-model")
-        .with_exposed_ports(8080, 9090)
-    )
-    container.start()
-    host = container.get_container_host_ip()
-    api_port = container.get_exposed_port(8080)
-    mgmt_port = container.get_exposed_port(9090)
-    base_url = f"http://{host}:{api_port}/api"
-    _wait_for_url(f"http://{host}:{mgmt_port}/actuator/health")
-    yield base_url
-    container.stop()
-
-
-@pytest.fixture(scope="session")
-def client(backend):
-    with httpx.Client(base_url=backend) as c:
+def client():
+    with httpx.Client(base_url=BACKEND_BASE_URL) as c:
         yield c
+
+
+@pytest.fixture(scope="session")
+def wiremock():
+    return WireMockHelper(WIREMOCK_BASE_URL)
+
+
+@pytest.fixture(autouse=True)
+def _isolate(wiremock):
+    wiremock.reset()
+    _truncate_all_tables()
+    yield
+
+
+def _truncate_all_tables() -> None:
+    with psycopg.connect(PG_DSN) as conn, conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT string_agg(format('%I.%I', schemaname, tablename), ',')
+            FROM pg_tables
+            WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
+              AND tablename != 'flyway_schema_history'
+            """
+        )
+        row = cur.fetchone()
+        tables = row[0] if row else None
+        if tables:
+            cur.execute(f"TRUNCATE {tables} CASCADE")
 
 
 @pytest.fixture
 def auth_headers():
-    """test profile에서 X-Test-User-Id로 인증 우회.
-
-    실제 OAuth 흐름은 슬라이스 테스트에서 검증. 시스템 테스트는
-    인증된 컨텍스트에서의 비즈니스 흐름에 집중.
-    """
     return {"X-Test-User-Id": "test-user-1"}
-
-
-@pytest.fixture(autouse=True)
-def _wiremock_reset(wiremock):
-    wiremock.reset()
-    yield
-
-
-def _wait_for_url(url: str, timeout: int = 180):
-    deadline = time.time() + timeout
-    last_error: Exception | None = None
-    while time.time() < deadline:
-        try:
-            r = httpx.get(url, timeout=2)
-            if r.status_code == 200:
-                return
-        except Exception as e:
-            last_error = e
-        time.sleep(2)
-    raise TimeoutError(f"{url} did not respond within {timeout}s. Last error: {last_error}")
 
 
 class WireMockHelper:
