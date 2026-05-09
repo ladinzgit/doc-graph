@@ -1161,6 +1161,14 @@ export interface components {
              */
             size?: number;
         };
+        Block: {
+            blockId?: string;
+            parentBlockId?: string | null;
+            type?: string;
+            text?: string;
+            /** Format: int32 */
+            order?: number;
+        };
         DocumentDetail: {
             /**
              * Format: int64
@@ -1189,6 +1197,8 @@ export interface components {
              * @example 1
              */
             assigneeMemberId?: number | null;
+            /** @description 블록 row 목록 */
+            blocks?: components["schemas"]["Block"][];
         };
         UserResponse: {
             /**

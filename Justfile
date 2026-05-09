@@ -47,8 +47,13 @@ systest:
     {{dotenv-run}} docker compose -p doc-graph-test -f docker-compose.yml -f docker-compose.test.yml --profile full up -d --build --wait
     cd tests && {{dotenv-run}} uv run pytest
 
-# OpenAPI → TypeScript 타입 생성 (백엔드 실행 중이어야 함)
-gen-types:
+# OpenAPI JSON dump — postgres 헬스체크 통과 후 plugin이 forked로 백엔드 부팅하여 spec dump
+openapi-dump:
+    {{dotenv-run}} docker compose up -d --wait
+    cd apps/backend && {{dotenv-run}} sh ./gradlew generateOpenApiDocs
+
+# OpenAPI → TypeScript 타입 생성 (openapi-dump 결과 JSON을 입력으로 사용)
+gen-types: openapi-dump
     npm run generate:types
 
 # 팀 공유 시크릿 암호화 후 .env에 저장
