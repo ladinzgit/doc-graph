@@ -4,7 +4,8 @@ set windows-shell := ["sh", "-cu"]
 # .env(평문 + dotenvx 암호화) + .env.local(개인 시크릿)을 child process에 주입.
 # --overload: .env.local이 .env의 빈 placeholder를 override (last-wins).
 # .env.keys로 암호화 항목 복호화.
-dotenv-run := 'dotenvx run --strict --overload -f .env -f .env.local --'
+# env 파일 경로는 justfile_directory() 절대경로 → recipe가 cwd를 자유롭게 옮겨도 안전.
+dotenv-run := 'dotenvx run --strict --overload -f "' + (justfile_directory() / ".env") + '" -f "' + (justfile_directory() / ".env.local") + '" --'
 
 # 기본 — 사용 가능한 recipe 목록
 default:
@@ -12,7 +13,8 @@ default:
 
 # 백엔드 로컬 개발 (postgres + ngrok 헬스체크 통과 후 백엔드 실행)
 bootRun:
-    {{dotenv-run}} sh -c 'docker compose up -d --wait && cd apps/backend && ./gradlew bootRun'
+    {{dotenv-run}} docker compose up -d --wait
+    cd apps/backend && {{dotenv-run}} sh ./gradlew bootRun
 
 # 백엔드 테스트 — 외부 시크릿은 dotenvx 미적용으로 환경에서 차단
 test-unit:
@@ -40,7 +42,10 @@ compose-down:
 # Pytest 시스템 테스트 — backend 컨테이너 + wiremock에 외부 client로 접근
 systest:
     #!/usr/bin/env sh
-    {{dotenv-run}} sh -c "trap 'docker compose -p doc-graph-test -f docker-compose.yml -f docker-compose.test.yml --profile full down -v' EXIT && docker compose -p doc-graph-test -f docker-compose.yml -f docker-compose.test.yml --profile full up -d --build --wait && ( cd tests && uv run pytest )"
+    set -e
+    trap '{{dotenv-run}} docker compose -p doc-graph-test -f docker-compose.yml -f docker-compose.test.yml --profile full down -v' EXIT
+    {{dotenv-run}} docker compose -p doc-graph-test -f docker-compose.yml -f docker-compose.test.yml --profile full up -d --build --wait
+    cd tests && {{dotenv-run}} uv run pytest
 
 # OpenAPI → TypeScript 타입 생성 (백엔드 실행 중이어야 함)
 gen-types:
