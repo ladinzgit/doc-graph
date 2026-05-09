@@ -9,6 +9,7 @@
 - Node.js 20+
 - Python 3.12+ + [uv](https://docs.astral.sh/uv/getting-started/installation/)
 - [just](https://just.systems/) — 모든 dev 명령의 진입점
+- (Windows 전용) Git for Windows — `C:\Program Files\Git\usr\bin`이 PATH에 포함되어야 한다
 
 `.env.local`을 생성해 시크릿을 채운다 (`.env`의 시크릿 섹션 참고). 공개 변수는 `.env`(commit)가 단일 출처다.
 
