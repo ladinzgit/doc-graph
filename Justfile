@@ -57,7 +57,7 @@ openapi-dump:
 gen-types: openapi-dump
     npm run generate:types
 
-# Redoc HTML 미리보기 빌드 (apps/docs workspace, 산출물은 apps/docs/dist/redoc.html)
+# Redoc HTML 미리보기 빌드 (apps/docs workspace, 산출물은 apps/docs/dist/index.html)
 gen-redoc: openapi-dump
     npm --workspace apps/docs run build
 
