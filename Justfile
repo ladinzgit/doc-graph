@@ -10,10 +10,6 @@ dotenv-run := 'dotenvx run --strict --overload -f .env -f .env.local --'
 default:
     @just --list
 
-# 첫 온보딩 — .env.local 생성 + JS 의존성 설치
-setup:
-    touch -a .env.local && npm install
-
 # 백엔드 로컬 개발 (postgres + ngrok 헬스체크 통과 후 백엔드 실행)
 bootRun:
     {{dotenv-run}} sh -c 'docker compose up -d --wait && cd apps/backend && ./gradlew bootRun'
@@ -49,3 +45,7 @@ systest:
 # OpenAPI → TypeScript 타입 생성 (백엔드 실행 중이어야 함)
 gen-types:
     npm run generate:types
+
+# 팀 공유 시크릿 암호화 후 .env에 저장
+encrypt-secret key value:
+    dotenvx set {{key}} {{value}}

@@ -2,13 +2,21 @@
 
 ## 사전 준비
 
+공통:
+
 - Docker Desktop (또는 Docker Engine + Compose)
-- Java 21
-- Node.js 20+
-- Python 3.12+ + [uv](https://docs.astral.sh/uv/getting-started/installation/)
-- [just](https://just.systems/) — 모든 dev 명령의 진입점
+- [just](https://just.systems/) — dev 명령 진입점
 - [dotenvx](https://dotenvx.com/docs/install) — 환경변수 주입·암호화
 - (Windows 전용) Git for Windows — `C:\Program Files\Git\usr\bin`이 PATH에 포함되어야 한다
+
+백엔드:
+
+- Java 21
+- (시스템 테스트) [uv](https://docs.astral.sh/uv/getting-started/installation/)
+
+프론트엔드:
+
+- Node.js 24+
 
 ---
 
@@ -20,9 +28,8 @@
 | `.env.local` | gitignored | 개인 시크릿 |
 | `.env.keys` | gitignored | dotenvx 복호화 키 |
 
-1. `just setup` — `.env.local` 생성 + JS 의존성 설치
-2. `.env.keys` 수령
-3. `.env`의 빈 placeholder 항목을 `.env.local`에 채움
+1. `.env.keys` 수령
+2. `.env`의 빈 placeholder 항목을 `.env.local`에 채움
 
 ---
 
