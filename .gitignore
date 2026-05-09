@@ -1,5 +1,6 @@
 # 환경변수 (시크릿)
 .env.local
+.env.keys
 
 # Node.js
 node_modules/
