@@ -56,7 +56,8 @@ data class ValidationPairCreatedEvent(
 읽기 연산은 **연산 단위로 분리**한다. 한 도메인이 여러 read 연산을 가지면 각각 별 인터페이스 + 별 핸들러로 둔다.
 
 - **인터페이스 위치**: 발행 도메인의 `query/application/`
-- **인터페이스 이름**: `<Verb><Target>(By<Criteria>)?Query` (Kotlin `fun interface`, 단일 메서드 `handle(args)`)
+- **인터페이스 이름**: `<Verb><Target>(By<Criteria>)?Query` (Kotlin `fun interface`, 단일 메서드)
+- **메서드 이름**: 인터페이스 이름의 Verb를 그대로 (`FindXQuery.find(...)`, `GetXQuery.get(...)`, `ListXQuery.list(...)`)
 - **구현체 이름**: `<QueryName>Handler`
 - **구현체 위치**: 발행 도메인의 `query/application/` (QueryDSL 등 영속 분리 필요 시 `query/infra/`로 별도 분리 가능)
 - **호출 측**: HTTP Controller(`query/interfaces/api/`)와 cross-domain 호출자가 같은 인터페이스 공유
@@ -82,13 +83,13 @@ validation/command/application/ValidationService.kt          # 의존성 주입
 ```kotlin
 // FindDocumentByIdQuery.kt
 fun interface FindDocumentByIdQuery {
-    fun handle(documentId: Long): DocumentDetail?
+    fun find(documentId: Long): DocumentDetail?
 }
 
 // FindDocumentByIdQueryHandler.kt
 @Service
 class FindDocumentByIdQueryHandler(...) : FindDocumentByIdQuery {
-    override fun handle(documentId: Long): DocumentDetail? = ...
+    override fun find(documentId: Long): DocumentDetail? = ...
 }
 ```
 

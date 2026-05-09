@@ -38,15 +38,15 @@ class ProcessValidationTaskCommandHandler(
         val task = repository.findById(command.taskId).orElseThrow()
         if (task.status != OutboxStatus.PENDING) return
 
-        val edge = findEdgeById.handle(task.edgeId) ?: run {
+        val edge = findEdgeById.find(task.edgeId) ?: run {
             transition.markFailed(command.taskId, "edge not found: ${task.edgeId}")
             return
         }
-        findDocumentById.handle(edge.sourceDocumentId) ?: run {
+        findDocumentById.find(edge.sourceDocumentId) ?: run {
             transition.markFailed(command.taskId, "source document not found: ${edge.sourceDocumentId}")
             return
         }
-        findDocumentById.handle(edge.targetDocumentId) ?: run {
+        findDocumentById.find(edge.targetDocumentId) ?: run {
             transition.markFailed(command.taskId, "target document not found: ${edge.targetDocumentId}")
             return
         }

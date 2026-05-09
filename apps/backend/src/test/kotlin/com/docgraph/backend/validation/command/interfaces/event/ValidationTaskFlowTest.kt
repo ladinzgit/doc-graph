@@ -33,12 +33,12 @@ import kotlin.test.assertTrue
 
 class FlowFakeFindEdgeByIdQuery : FindEdgeByIdQuery {
     @Volatile var behavior: (Long) -> EdgeDetail? = { null }
-    override fun handle(edgeId: Long): EdgeDetail? = behavior(edgeId)
+    override fun find(edgeId: Long): EdgeDetail? = behavior(edgeId)
 }
 
 class FlowFakeFindDocumentByIdQuery : FindDocumentByIdQuery {
     @Volatile var behavior: (Long) -> DocumentDetail? = { null }
-    override fun handle(documentId: Long): DocumentDetail? = behavior(documentId)
+    override fun find(documentId: Long): DocumentDetail? = behavior(documentId)
 }
 
 class FlowPreparedProbe {

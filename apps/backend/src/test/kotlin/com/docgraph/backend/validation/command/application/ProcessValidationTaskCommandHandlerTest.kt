@@ -51,14 +51,14 @@ class ProcessValidationTaskCommandHandlerTest {
         val taskId = 1L
         val edgeId = 100L
         every { repository.findById(taskId) } returns Optional.of(pendingTask(taskId, edgeId))
-        every { findEdgeById.handle(edgeId) } returns EdgeDetail(edgeId, 200L, 300L, "criterion")
-        every { findDocumentById.handle(any()) } returns document(0L)
+        every { findEdgeById.find(edgeId) } returns EdgeDetail(edgeId, 200L, 300L, "criterion")
+        every { findDocumentById.find(any()) } returns document(0L)
 
         handler.handle(ProcessValidationTaskCommand(taskId))
 
         verify { transition.recordAttempt(taskId) }
-        verify { findEdgeById.handle(edgeId) }
-        verify(exactly = 2) { findDocumentById.handle(any()) }
+        verify { findEdgeById.find(edgeId) }
+        verify(exactly = 2) { findDocumentById.find(any()) }
         verify { publisher.publishEvent(any<ValidationTaskPreparedEvent>()) }
         verify(exactly = 0) { transition.markFailed(any(), any()) }
     }
@@ -72,7 +72,7 @@ class ProcessValidationTaskCommandHandlerTest {
         handler.handle(ProcessValidationTaskCommand(taskId))
 
         verify { transition.recordAttempt(taskId) }
-        verify(exactly = 0) { findEdgeById.handle(any()) }
+        verify(exactly = 0) { findEdgeById.find(any()) }
         verify(exactly = 0) { publisher.publishEvent(any<ValidationTaskPreparedEvent>()) }
     }
 
@@ -81,12 +81,12 @@ class ProcessValidationTaskCommandHandlerTest {
         val taskId = 1L
         val edgeId = 100L
         every { repository.findById(taskId) } returns Optional.of(pendingTask(taskId, edgeId))
-        every { findEdgeById.handle(edgeId) } returns null
+        every { findEdgeById.find(edgeId) } returns null
 
         handler.handle(ProcessValidationTaskCommand(taskId))
 
         verify { transition.markFailed(taskId, match { it != null && it.contains("edge not found") }) }
-        verify(exactly = 0) { findDocumentById.handle(any()) }
+        verify(exactly = 0) { findDocumentById.find(any()) }
         verify(exactly = 0) { publisher.publishEvent(any<ValidationTaskPreparedEvent>()) }
     }
 
@@ -95,8 +95,8 @@ class ProcessValidationTaskCommandHandlerTest {
         val taskId = 1L
         val edgeId = 100L
         every { repository.findById(taskId) } returns Optional.of(pendingTask(taskId, edgeId))
-        every { findEdgeById.handle(edgeId) } returns EdgeDetail(edgeId, 200L, 300L, "criterion")
-        every { findDocumentById.handle(200L) } returns null
+        every { findEdgeById.find(edgeId) } returns EdgeDetail(edgeId, 200L, 300L, "criterion")
+        every { findDocumentById.find(200L) } returns null
 
         handler.handle(ProcessValidationTaskCommand(taskId))
 
@@ -109,9 +109,9 @@ class ProcessValidationTaskCommandHandlerTest {
         val taskId = 1L
         val edgeId = 100L
         every { repository.findById(taskId) } returns Optional.of(pendingTask(taskId, edgeId))
-        every { findEdgeById.handle(edgeId) } returns EdgeDetail(edgeId, 200L, 300L, "criterion")
-        every { findDocumentById.handle(200L) } returns document(200L)
-        every { findDocumentById.handle(300L) } returns null
+        every { findEdgeById.find(edgeId) } returns EdgeDetail(edgeId, 200L, 300L, "criterion")
+        every { findDocumentById.find(200L) } returns document(200L)
+        every { findDocumentById.find(300L) } returns null
 
         handler.handle(ProcessValidationTaskCommand(taskId))
 
@@ -124,7 +124,7 @@ class ProcessValidationTaskCommandHandlerTest {
         val taskId = 1L
         val edgeId = 100L
         every { repository.findById(taskId) } returns Optional.of(pendingTask(taskId, edgeId))
-        every { findEdgeById.handle(edgeId) } throws RuntimeException("transient")
+        every { findEdgeById.find(edgeId) } throws RuntimeException("transient")
 
         val ex = assertThrows(RuntimeException::class.java) {
             handler.handle(ProcessValidationTaskCommand(taskId))

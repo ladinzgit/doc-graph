@@ -37,7 +37,7 @@ class FakeFindEdgeByIdQuery : FindEdgeByIdQuery {
     @Volatile var behavior: (Long) -> EdgeDetail? = { null }
     val callCount = AtomicInteger(0)
 
-    override fun handle(edgeId: Long): EdgeDetail? {
+    override fun find(edgeId: Long): EdgeDetail? {
         callCount.incrementAndGet()
         return behavior(edgeId)
     }
@@ -52,7 +52,7 @@ class FakeFindDocumentByIdQuery : FindDocumentByIdQuery {
     @Volatile var behavior: (Long) -> DocumentDetail? = { null }
     val callCount = AtomicInteger(0)
 
-    override fun handle(documentId: Long): DocumentDetail? {
+    override fun find(documentId: Long): DocumentDetail? {
         callCount.incrementAndGet()
         return behavior(documentId)
     }
