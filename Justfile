@@ -49,8 +49,11 @@ systest:
 
 # OpenAPI JSON dump — backend가 forked로 부팅하여 spec dump 후 packages/api-types로 canonical 위치 복사
 openapi-dump:
+    #!/usr/bin/env sh
+    set -e
+    trap '{{dotenv-run}} docker compose down' EXIT
     {{dotenv-run}} docker compose up -d --wait
-    cd apps/backend && {{dotenv-run}} sh ./gradlew generateOpenApiDocs
+    (cd apps/backend && {{dotenv-run}} sh ./gradlew --rerun-tasks generateOpenApiDocs)
     cp apps/backend/build/openapi.json packages/api-types/openapi.json
 
 # OpenAPI → TypeScript 타입 생성 (packages/api-types/openapi.json 입력)
