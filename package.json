@@ -3,10 +3,11 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "apps/frontend"
+    "apps/frontend",
+    "apps/docs"
   ],
   "scripts": {
-    "generate:types": "openapi-typescript apps/backend/build/openapi.json -o packages/api-types/src/schema.ts"
+    "generate:types": "openapi-typescript packages/api-types/openapi.json -o packages/api-types/src/schema.ts"
   },
   "devDependencies": {
     "openapi-typescript": "^7.4.4"

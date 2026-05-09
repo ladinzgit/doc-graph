@@ -1,0 +1,10 @@
+{
+  "name": "@docgraph/docs",
+  "private": true,
+  "scripts": {
+    "build": "redocly build-docs ../../packages/api-types/openapi.json -o dist/redoc.html"
+  },
+  "devDependencies": {
+    "@redocly/cli": "^1.34.0"
+  }
+}

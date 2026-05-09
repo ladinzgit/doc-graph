@@ -47,14 +47,19 @@ systest:
     {{dotenv-run}} docker compose -p doc-graph-test -f docker-compose.yml -f docker-compose.test.yml --profile full up -d --build --wait
     cd tests && {{dotenv-run}} uv run pytest
 
-# OpenAPI JSON dump — postgres 헬스체크 통과 후 plugin이 forked로 백엔드 부팅하여 spec dump
+# OpenAPI JSON dump — backend가 forked로 부팅하여 spec dump 후 packages/api-types로 canonical 위치 복사
 openapi-dump:
     {{dotenv-run}} docker compose up -d --wait
     cd apps/backend && {{dotenv-run}} sh ./gradlew generateOpenApiDocs
+    cp apps/backend/build/openapi.json packages/api-types/openapi.json
 
-# OpenAPI → TypeScript 타입 생성 (openapi-dump 결과 JSON을 입력으로 사용)
+# OpenAPI → TypeScript 타입 생성 (packages/api-types/openapi.json 입력)
 gen-types: openapi-dump
     npm run generate:types
+
+# Redoc HTML 미리보기 빌드 (apps/docs workspace, 산출물은 apps/docs/dist/redoc.html)
+gen-redoc: openapi-dump
+    npm --workspace apps/docs run build
 
 # 팀 공유 시크릿 암호화 후 .env에 저장
 encrypt-secret key value:
