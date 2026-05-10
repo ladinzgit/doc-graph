@@ -1,4 +1,0 @@
-ai:
-  openai:
-    api-key: test
-    model: test-model

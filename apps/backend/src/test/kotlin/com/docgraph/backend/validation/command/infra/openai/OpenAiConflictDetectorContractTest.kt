@@ -1,6 +1,7 @@
 package com.docgraph.backend.validation.command.infra.openai
 
 import com.docgraph.backend.document.query.application.Block
+import com.docgraph.backend.fixtures.OpenAiTestFixture
 import com.docgraph.backend.fixtures.SharedPostgresContainer
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
@@ -29,6 +30,7 @@ import kotlin.test.assertTrue
 @Tag("component")
 @SpringBootTest
 @Import(SharedPostgresContainer::class)
+@OpenAiTestFixture
 class OpenAiConflictDetectorContractTest {
 
     @Autowired lateinit var detector: OpenAiConflictDetector

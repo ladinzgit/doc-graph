@@ -16,21 +16,22 @@ bootRun:
     {{dotenv-run}} docker compose up -d --wait
     cd apps/backend && {{dotenv-run}} sh ./gradlew bootRun
 
-# 백엔드 테스트 — 외부 시크릿은 dotenvx 미적용으로 환경에서 차단
+# 백엔드 테스트 — bootRun과 동일하게 dotenvx로 .env + .env.local 주입.
+# fixture 결정성은 TestPropertySource가 env 위 precedence로 강제.
 test-unit:
-    cd apps/backend && exec ./gradlew unitTest
+    cd apps/backend && {{dotenv-run}} sh ./gradlew unitTest
 
 test-slice:
-    cd apps/backend && exec ./gradlew sliceTest
+    cd apps/backend && {{dotenv-run}} sh ./gradlew sliceTest
 
 test-component:
-    cd apps/backend && exec ./gradlew componentTest
+    cd apps/backend && {{dotenv-run}} sh ./gradlew componentTest
 
 test-all:
-    cd apps/backend && exec ./gradlew test
+    cd apps/backend && {{dotenv-run}} sh ./gradlew test
 
 test-class class:
-    cd apps/backend && exec ./gradlew test --tests {{class}}
+    cd apps/backend && {{dotenv-run}} sh ./gradlew test --tests {{class}}
 
 # 풀 스택 — postgres + ngrok + backend 컨테이너
 compose-up:

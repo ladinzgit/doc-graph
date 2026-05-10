@@ -1,5 +1,6 @@
 package com.docgraph.backend.validation.command.infra.openai
 
+import com.docgraph.backend.fixtures.OpenAiTestFixture
 import com.docgraph.backend.fixtures.SharedPostgresContainer
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
@@ -21,6 +22,7 @@ import org.springframework.web.client.ResourceAccessException
 @Tag("component")
 @SpringBootTest
 @Import(SharedPostgresContainer::class)
+@OpenAiTestFixture
 @TestPropertySource(properties = ["ai.openai.timeout-ms=300"])
 class OpenAiConflictDetectorTimeoutContractTest {
 
