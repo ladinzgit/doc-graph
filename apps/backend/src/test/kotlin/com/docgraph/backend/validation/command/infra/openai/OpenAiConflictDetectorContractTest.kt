@@ -1,8 +1,6 @@
 package com.docgraph.backend.validation.command.infra.openai
 
 import com.docgraph.backend.document.query.application.Block
-import com.docgraph.backend.document.query.application.FindDocumentByIdQuery
-import com.docgraph.backend.graph.query.application.FindEdgeByIdQuery
 import com.docgraph.backend.testcontainers.TestcontainersConfig
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
@@ -19,8 +17,6 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -30,16 +26,9 @@ import org.springframework.web.client.HttpServerErrorException
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-@TestConfiguration
-class OpenAiContractTestStubs {
-    // graph·document 도메인의 query handler는 다른 backlog 단위에서 구현 — 어댑터 컴포넌트 컨텍스트 로드를 위해 임시 stub.
-    @Bean fun stubFindEdgeByIdQuery() = FindEdgeByIdQuery { null }
-    @Bean fun stubFindDocumentByIdQuery() = FindDocumentByIdQuery { null }
-}
-
 @Tag("component")
 @SpringBootTest
-@Import(TestcontainersConfig::class, OpenAiContractTestStubs::class)
+@Import(TestcontainersConfig::class)
 class OpenAiConflictDetectorContractTest {
 
     @Autowired lateinit var detector: OpenAiConflictDetector

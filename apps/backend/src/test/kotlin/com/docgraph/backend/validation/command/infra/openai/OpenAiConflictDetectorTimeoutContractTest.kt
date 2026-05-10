@@ -20,7 +20,7 @@ import org.springframework.web.client.ResourceAccessException
 
 @Tag("component")
 @SpringBootTest
-@Import(TestcontainersConfig::class, OpenAiContractTestStubs::class)
+@Import(TestcontainersConfig::class)
 @TestPropertySource(properties = ["ai.openai.timeout-ms=300"])
 class OpenAiConflictDetectorTimeoutContractTest {
 
