@@ -1,7 +1,7 @@
 package com.docgraph.backend.validation.command.interfaces.event
 
 import com.docgraph.backend.graph.command.domain.ValidationPairCreatedEvent
-import com.docgraph.backend.testcontainers.TestcontainersConfig
+import com.docgraph.backend.fixtures.SharedPostgresContainer
 import com.docgraph.backend.validation.command.application.ProcessValidationTaskCommandHandler
 import com.docgraph.backend.validation.command.domain.ValidationTaskQueuedEvent
 import com.docgraph.backend.validation.command.domain.ValidationTaskRepository
@@ -55,7 +55,7 @@ class ValidationPairCreatedEventListenerRollbackTestConfig {
 
 @Tag("component")
 @SpringBootTest
-@Import(ValidationPairCreatedEventListenerRollbackTestConfig::class, TestcontainersConfig::class)
+@Import(ValidationPairCreatedEventListenerRollbackTestConfig::class, SharedPostgresContainer::class)
 class ValidationPairCreatedEventListenerRollbackTest {
 
     @Autowired lateinit var testPublisher: ValidationPairCreatedRollbackPublisher

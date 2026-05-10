@@ -2,7 +2,7 @@ package com.docgraph.backend.validation.command.interfaces.event
 
 import com.docgraph.backend.event.OutboxStatus
 import com.docgraph.backend.graph.command.domain.ValidationPairCreatedEvent
-import com.docgraph.backend.testcontainers.TestcontainersConfig
+import com.docgraph.backend.fixtures.SharedPostgresContainer
 import com.docgraph.backend.validation.command.application.ProcessValidationTaskCommandHandler
 import com.docgraph.backend.validation.command.domain.ValidationTaskQueuedEvent
 import com.docgraph.backend.validation.command.domain.ValidationTaskRepository
@@ -56,7 +56,7 @@ class ValidationPairCreatedEventListenerTestConfig {
 
 @Tag("component")
 @SpringBootTest
-@Import(ValidationPairCreatedEventListenerTestConfig::class, TestcontainersConfig::class)
+@Import(ValidationPairCreatedEventListenerTestConfig::class, SharedPostgresContainer::class)
 class ValidationPairCreatedEventListenerTest {
 
     @Autowired lateinit var testPublisher: ValidationPairCreatedTestPublisher

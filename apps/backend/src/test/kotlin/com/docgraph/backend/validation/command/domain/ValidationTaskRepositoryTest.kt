@@ -1,7 +1,7 @@
 package com.docgraph.backend.validation.command.domain
 
 import com.docgraph.backend.event.OutboxStatus
-import com.docgraph.backend.testcontainers.TestcontainersConfig
+import com.docgraph.backend.fixtures.SharedPostgresContainer
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +18,7 @@ import kotlin.test.assertNull
 @Tag("slice")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(TestcontainersConfig::class)
+@Import(SharedPostgresContainer::class)
 class ValidationTaskRepositoryTest @Autowired constructor(
     private val repository: ValidationTaskRepository,
 ) {

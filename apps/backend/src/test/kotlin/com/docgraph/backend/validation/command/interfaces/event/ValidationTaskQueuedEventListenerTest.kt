@@ -6,7 +6,7 @@ import com.docgraph.backend.document.query.application.FindDocumentByIdQuery
 import com.docgraph.backend.event.OutboxStatus
 import com.docgraph.backend.graph.query.application.EdgeDetail
 import com.docgraph.backend.graph.query.application.FindEdgeByIdQuery
-import com.docgraph.backend.testcontainers.TestcontainersConfig
+import com.docgraph.backend.fixtures.SharedPostgresContainer
 import com.docgraph.backend.validation.command.domain.ValidationTask
 import com.docgraph.backend.validation.command.domain.ValidationTaskPreparedEvent
 import com.docgraph.backend.validation.command.domain.ValidationTaskQueuedEvent
@@ -111,7 +111,7 @@ class ValidationTaskQueuedEventListenerTestConfig {
         "validation.task.process.retry-max-delay-ms=10",
     ],
 )
-@Import(ValidationTaskQueuedEventListenerTestConfig::class, TestcontainersConfig::class)
+@Import(ValidationTaskQueuedEventListenerTestConfig::class, SharedPostgresContainer::class)
 class ValidationTaskQueuedEventListenerTest {
 
     @Autowired lateinit var testPublisher: ReadyEventTestPublisher

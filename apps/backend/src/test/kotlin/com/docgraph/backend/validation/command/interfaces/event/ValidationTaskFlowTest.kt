@@ -7,7 +7,7 @@ import com.docgraph.backend.event.OutboxStatus
 import com.docgraph.backend.graph.command.domain.ValidationPairCreatedEvent
 import com.docgraph.backend.graph.query.application.EdgeDetail
 import com.docgraph.backend.graph.query.application.FindEdgeByIdQuery
-import com.docgraph.backend.testcontainers.TestcontainersConfig
+import com.docgraph.backend.fixtures.SharedPostgresContainer
 import com.docgraph.backend.validation.command.domain.ValidationTaskPreparedEvent
 import com.docgraph.backend.validation.command.domain.ValidationTaskRepository
 import org.junit.jupiter.api.BeforeEach
@@ -76,7 +76,7 @@ class ValidationTaskFlowTestConfig {
 
 @Tag("component")
 @SpringBootTest
-@Import(ValidationTaskFlowTestConfig::class, TestcontainersConfig::class)
+@Import(ValidationTaskFlowTestConfig::class, SharedPostgresContainer::class)
 class ValidationTaskFlowTest {
 
     @Autowired lateinit var testPublisher: FlowTestPublisher

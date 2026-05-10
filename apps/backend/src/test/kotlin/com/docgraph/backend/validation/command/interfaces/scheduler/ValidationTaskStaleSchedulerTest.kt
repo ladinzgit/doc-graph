@@ -1,6 +1,6 @@
 package com.docgraph.backend.validation.command.interfaces.scheduler
 
-import com.docgraph.backend.testcontainers.TestcontainersConfig
+import com.docgraph.backend.fixtures.SharedPostgresContainer
 import com.docgraph.backend.validation.command.application.ProcessValidationTaskCommandHandler
 import com.docgraph.backend.validation.command.domain.ValidationTask
 import com.docgraph.backend.validation.command.domain.ValidationTaskQueuedEvent
@@ -43,7 +43,7 @@ class ValidationTaskStaleSchedulerTestConfig {
 
 @Tag("component")
 @SpringBootTest
-@Import(ValidationTaskStaleSchedulerTestConfig::class, TestcontainersConfig::class)
+@Import(ValidationTaskStaleSchedulerTestConfig::class, SharedPostgresContainer::class)
 class ValidationTaskStaleSchedulerTest {
 
     @Autowired lateinit var scheduler: ValidationTaskStaleScheduler
