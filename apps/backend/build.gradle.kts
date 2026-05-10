@@ -22,7 +22,7 @@ repositories {
 
 dependencyManagement {
 	imports {
-		mavenBom("org.testcontainers:testcontainers-bom:1.20.4")
+		mavenBom("org.testcontainers:testcontainers-bom:2.0.5")
 	}
 }
 
@@ -44,8 +44,8 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
-	testImplementation("org.testcontainers:junit-jupiter")
-	testImplementation("org.testcontainers:postgresql")
+	testImplementation("org.testcontainers:testcontainers-junit-jupiter")
+	testImplementation("org.testcontainers:testcontainers-postgresql")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("io.mockk:mockk:1.13.13")
 	testImplementation("com.ninja-squad:springmockk:5.0.1")
