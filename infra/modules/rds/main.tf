@@ -8,7 +8,7 @@ resource "aws_db_subnet_group" "main" {
 resource "aws_db_instance" "main" {
   identifier        = "main-postgres"
   engine            = "postgres"
-  engine_version    = "15"  # Learner Lab 환경에서 PG17 미지원 사례 있음; PG15도 pg_trgm 지원
+  engine_version    = "17"
   instance_class    = "db.t3.micro"
   allocated_storage = 20
 
