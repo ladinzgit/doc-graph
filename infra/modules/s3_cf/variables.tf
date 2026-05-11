@@ -1,1 +1,4 @@
-# 이 모듈은 입력 변수가 없습니다.
+variable "alb_dns_name" {
+  description = "CloudFront /api/* 오리진으로 사용할 ALB DNS 이름"
+  type        = string
+}

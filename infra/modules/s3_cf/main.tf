@@ -24,12 +24,47 @@ resource "aws_cloudfront_distribution" "frontend" {
   enabled             = true
   default_root_object = "index.html"
 
+  # ── 오리진 1: S3 (프론트엔드 정적 파일) ─────────────────────────
   origin {
     domain_name              = aws_s3_bucket.frontend.bucket_regional_domain_name
     origin_id                = "s3-frontend"
     origin_access_control_id = aws_cloudfront_origin_access_control.frontend.id
   }
 
+  # ── 오리진 2: ALB (백엔드 API) ──────────────────────────────────
+  # Webhook은 ALB DNS로 직접 수신 — CloudFront를 거치지 않음
+  origin {
+    domain_name = var.alb_dns_name
+    origin_id   = "alb-backend"
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only"  # ALB는 HTTP만 서빙 (HTTPS 미적용)
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
+  # ── /api/* → ALB (캐싱 없음, 모든 헤더·쿼리·쿠키 전달) ──────────
+  ordered_cache_behavior {
+    path_pattern           = "/api/*"
+    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = "alb-backend"
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      query_string = true
+      headers      = ["*"]  # Authorization, Content-Type 등 모든 헤더 전달
+      cookies { forward = "all" }
+    }
+
+    min_ttl     = 0
+    default_ttl = 0
+    max_ttl     = 0
+  }
+
+  # ── 기본 동작: S3 (프론트엔드) ──────────────────────────────────
   default_cache_behavior {
     allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]
@@ -42,9 +77,15 @@ resource "aws_cloudfront_distribution" "frontend" {
     }
   }
 
-  # React SPA: 모든 경로를 index.html로 fallback
+  # React SPA: 404/403을 index.html로 fallback
   custom_error_response {
     error_code         = 403
+    response_code      = 200
+    response_page_path = "/index.html"
+  }
+
+  custom_error_response {
+    error_code         = 404
     response_code      = 200
     response_page_path = "/index.html"
   }

@@ -34,12 +34,13 @@ module "ecs" {
   sg_id              = module.sg.fargate_sg_id
   target_group_arn   = module.alb.target_group_arn
   rds_endpoint       = module.rds.endpoint
-  rds_password       = var.rds_password
-  notion_client_id     = var.notion_client_id
-  notion_client_secret = var.notion_client_secret
-  ai_openai_api_key    = var.ai_openai_api_key
-  ai_openai_base_url   = var.ai_openai_base_url
-  ai_openai_model      = var.ai_openai_model
+  ai_openai_base_url = var.ai_openai_base_url
+  ai_openai_model    = var.ai_openai_model
+
+  rds_password_secret_arn     = module.secrets.rds_password_arn
+  notion_client_id_secret_arn = module.secrets.notion_client_id_arn
+  notion_client_secret_arn    = module.secrets.notion_client_secret_arn
+  openai_api_key_secret_arn   = module.secrets.openai_api_key_arn
 }
 
 # ── 4단계: 데이터베이스 ──────────────────────────────────────
@@ -50,7 +51,18 @@ module "rds" {
   db_password        = var.rds_password
 }
 
-# ── 5단계: 프론트엔드 호스팅 ─────────────────────────────────
+# ── 5단계: 시크릿 관리 ───────────────────────────────────────
+module "secrets" {
+  source               = "./modules/secrets"
+  rds_password         = var.rds_password
+  notion_client_id     = var.notion_client_id
+  notion_client_secret = var.notion_client_secret
+  openai_api_key       = var.ai_openai_api_key
+}
+
+# ── 6단계: 프론트엔드 호스팅 ─────────────────────────────────
+# React 번들 완성 후 주석 해제
 # module "s3_cf" {
-#   source = "./modules/s3_cf"
-#   }
+#   source       = "./modules/s3_cf"
+#   alb_dns_name = module.alb.dns_name
+# }

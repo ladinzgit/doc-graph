@@ -28,28 +28,24 @@ variable "rds_endpoint" {
   default   = ""
 }
 
-variable "rds_password" {
+variable "rds_password_secret_arn" {
   type      = string
   sensitive = true
-  default   = ""
 }
 
-variable "notion_client_id" {
+variable "notion_client_id_secret_arn" {
   type      = string
   sensitive = true
-  default   = ""
 }
 
-variable "notion_client_secret" {
+variable "notion_client_secret_arn" {
   type      = string
   sensitive = true
-  default   = ""
 }
 
-variable "ai_openai_api_key" {
+variable "openai_api_key_secret_arn" {
   type      = string
   sensitive = true
-  default   = ""
 }
 
 variable "ai_openai_base_url" {

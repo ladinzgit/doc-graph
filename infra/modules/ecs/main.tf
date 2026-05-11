@@ -32,20 +32,21 @@ resource "aws_ecs_task_definition" "app" {
     }]
 
     environment = [
-      { name = "SPRING_DATASOURCE_URL",      value = "jdbc:postgresql://${var.rds_endpoint}/docgraph" },
-      { name = "SPRING_DATASOURCE_USERNAME", value = "docgraph" },
-      { name = "SPRING_DATASOURCE_PASSWORD", value = var.rds_password },
-      # docker-compose 자동 기동 비활성화 (developmentOnly 이므로 JAR에 없지만 명시적으로 끔)
-      { name = "SPRING_DOCKER_COMPOSE_ENABLED", value = "false" },
-      # Actuator를 메인 서버(8080)와 같은 포트에서 서빙 → ALB health check가 /actuator/health에 접근 가능
-      { name = "MANAGEMENT_SERVER_PORT", value = "8080" },
-      # 컨테이너 메모리 한도(2GB)를 JVM이 인식하게 하고 최대 75%를 힙에 할당
-      { name = "JAVA_TOOL_OPTIONS", value = "-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0" },
-      { name = "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_NOTION_CLIENT_ID",     value = var.notion_client_id },
-      { name = "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_NOTION_CLIENT_SECRET", value = var.notion_client_secret },
-      { name = "AI_OPENAI_API_KEY",   value = var.ai_openai_api_key },
-      { name = "AI_OPENAI_BASE_URL",  value = var.ai_openai_base_url },
-      { name = "AI_OPENAI_MODEL",     value = var.ai_openai_model },
+      { name = "SPRING_DATASOURCE_URL",         value = "jdbc:postgresql://${var.rds_endpoint}/docgraph" },
+      { name = "SPRING_DATASOURCE_USERNAME",     value = "docgraph" },
+      { name = "SPRING_DOCKER_COMPOSE_ENABLED",  value = "false" },
+      { name = "MANAGEMENT_SERVER_PORT",         value = "8080" },
+      { name = "JAVA_TOOL_OPTIONS",              value = "-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0" },
+      { name = "AI_OPENAI_BASE_URL",             value = var.ai_openai_base_url },
+      { name = "AI_OPENAI_MODEL",                value = var.ai_openai_model },
+    ]
+
+    # 민감 값은 Secrets Manager ARN 참조 — 태스크 실행 시 ECS가 직접 주입
+    secrets = [
+      { name = "SPRING_DATASOURCE_PASSWORD",                                          valueFrom = var.rds_password_secret_arn },
+      { name = "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_NOTION_CLIENT_ID",         valueFrom = var.notion_client_id_secret_arn },
+      { name = "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_NOTION_CLIENT_SECRET",     valueFrom = var.notion_client_secret_arn },
+      { name = "AI_OPENAI_API_KEY",                                                   valueFrom = var.openai_api_key_secret_arn },
     ]
 
     healthCheck = {
